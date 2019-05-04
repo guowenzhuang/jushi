@@ -11,6 +11,22 @@ spring:
       transport:
         dashboard: localhost:8080
       eager: true
+  jpa:
+    open-in-view: true
+    database: POSTGRESQL
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        temp:
+          use_jdbc_metadata_defaults: false
+  datasource:
+    platform: postgres
+    url: jdbc:postgresql://localhost:5432/auth
+    username: postgres
+    password: 123456
+    driver-class-name: org.postgresql.Driver
   redis:
     host: localhost
 management:
