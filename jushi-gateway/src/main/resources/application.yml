@@ -1,0 +1,45 @@
+server:
+  port: 8001
+spring:
+  application:
+    name: jushi-gateway
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 127.0.0.1:8848
+    sentinel:
+      transport:
+        dashboard: localhost:8080
+      eager: true
+    gateway:
+      discovery:
+        locator:
+          enabled: true
+      routes:
+        - id: jushi-auth-server
+          uri: lb://jushi-auth-server
+          predicates:
+            - Path=/uaa/**
+          filters:
+            - StripPrefix=1
+        - id: jushi-article
+          uri: lb://jushi-article
+          predicates:
+            - Path=/article/** # 如果请求地址满足/to_client/**,则转发到 service-client 服务
+          filters:
+            - StripPrefix=1 # 去除请求地址中的to_client
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+security:
+  oauth2:
+    client:
+      access-token-uri: http://localhost:8001/uaa/oauth/token
+      user-authorization-uri: http://localhost:8001/uaa/oauth/authorize
+      client-id: webapp
+    resource:
+      user-info-uri: http://localhost:8001/uaa/user
+      prefer-token-info: false

@@ -1,0 +1,43 @@
+server:
+  port: 6001
+spring:
+  application:
+    name: jushi-auth-server
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 127.0.0.1:8848
+    sentinel:
+      transport:
+        dashboard: localhost:8080
+      eager: true
+  jpa:
+    open-in-view: true
+    database: POSTGRESQL
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        temp:
+          use_jdbc_metadata_defaults: false
+  datasource:
+    platform: postgres
+    url: jdbc:postgresql://localhost:5432/auth
+    username: postgres
+    password: 123456
+    driver-class-name: org.postgresql.Driver
+  redis:
+    host: localhost
+    port: 6379
+    password:
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+##很重要
+security:
+  oauth2:
+    resource:
+      filter-order: 3

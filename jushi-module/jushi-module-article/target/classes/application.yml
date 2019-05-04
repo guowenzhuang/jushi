@@ -1,0 +1,28 @@
+server:
+  port: 10010
+spring:
+  application:
+    name: jushi-article
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 127.0.0.1:8848
+    sentinel:
+      transport:
+        dashboard: localhost:8080
+      eager: true
+  redis:
+    host: localhost
+management:
+  security:
+    enabled: false
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+security:
+  oauth2:
+    resource:
+      id: jushi-article
+      user-info-uri: http://localhost:8001/uaa/user
+      prefer-token-info: false
