@@ -19,15 +19,15 @@ spring:
         - id: jushi-auth-server
           uri: lb://jushi-auth-server
           predicates:
-            - Path=/uaa/**
+            - Path=/api/uaa/**
           filters:
-            - StripPrefix=1
+            - StripPrefix=2
         - id: jushi-article
           uri: lb://jushi-article
           predicates:
-            - Path=/article/** # 如果请求地址满足/to_client/**,则转发到 service-client 服务
+            - Path=/api/article/** # 如果请求地址满足/to_client/**,则转发到 service-client 服务
           filters:
-            - StripPrefix=1 # 去除请求地址中的to_client
+            - StripPrefix=2 # 去除请求地址中的to_client
 
 management:
   endpoints:
@@ -37,9 +37,9 @@ management:
 security:
   oauth2:
     client:
-      access-token-uri: http://localhost:8001/uaa/oauth/token
-      user-authorization-uri: http://localhost:8001/uaa/oauth/authorize
+      access-token-uri: http://localhost:8001/api/uaa/oauth/token
+      user-authorization-uri: http://localhost:8001/api/uaa/oauth/authorize
       client-id: webapp
     resource:
-      user-info-uri: http://localhost:8001/uaa/user
+      user-info-uri: http://localhost:8001/api/uaa/user
       prefer-token-info: false
