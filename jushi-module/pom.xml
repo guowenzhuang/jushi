@@ -13,6 +13,7 @@
     <packaging>pom</packaging>
     <modules>
         <module>jushi-module-article</module>
+        <module>jushi-module-user</module>
     </modules>
 
 
