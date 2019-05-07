@@ -5,6 +5,7 @@
 # IntelliJ project files
 .idea
 *.iml
+lib
 target
 *.class
 out
