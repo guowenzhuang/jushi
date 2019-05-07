@@ -5,5 +5,7 @@
 # IntelliJ project files
 .idea
 *.iml
+target
+*.class
 out
 gen
