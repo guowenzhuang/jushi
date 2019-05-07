@@ -3,18 +3,14 @@ package com.jushi.user.dao;
 import com.jushi.user.pojo.SysUser;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 
 
 public interface UserDao extends JpaRepository<SysUser,String>,JpaSpecificationExecutor<SysUser>{
-    /**
-     * 用户注册
-     * @param password
-     * @return
-     */
-    SysUser findByRegister(@Param("username")String username,@Param("password")String password);
+
     /**
      * 根据用户名查询用户
      */

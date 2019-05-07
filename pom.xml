@@ -12,6 +12,7 @@
         <module>jushi-module</module>
         <module>jushi-gateway</module>
         <module>jushi-auth</module>
+
     </modules>
     <parent>
         <groupId>org.springframework.boot</groupId>

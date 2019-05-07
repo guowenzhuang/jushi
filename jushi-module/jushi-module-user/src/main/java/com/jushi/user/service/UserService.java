@@ -27,17 +27,17 @@ public class UserService {
 	private UserDao userDao;
 	@Autowired
 	BCryptPasswordEncoder encoder;
-	 public SysUser findByRegister(String username,String password){
-		SysUser user = new SysUser();
-		user.setUsername(username);
-		user.setPassword(password);
-		 List<SysUser> find = userDao.findByUsername(username);
-		 if (username==null && username.equals("")){
-			 logger.warn("{}-用户已存在，请选择其他用户名!",username);
+	 public SysUser findByRegister(SysUser user){
+		SysUser u = new SysUser();
+		u.setUsername(user.getUsername());
+		u.setPassword(user.getPassword());
+		 List<SysUser> find = userDao.findByUsername(user.getUsername());
+		 if (user.getUsername()==null && user.getUsername().equals("")){
+			 logger.warn("{}-用户已存在，请选择其他用户名!",user.getUsername());
 		 }
 		 //注册用户
-		 add(user);
-		 logger.info("{}注册成功!",username);
+		 userDao.save(user);
+		 logger.info("{}注册成功!",user.getUsername());
 		return user;
     }
 	/**
