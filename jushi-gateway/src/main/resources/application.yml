@@ -28,6 +28,12 @@ spring:
             - Path=/api/article/** # 如果请求地址满足/to_client/**,则转发到 service-client 服务
           filters:
             - StripPrefix=2 # 去除请求地址中的to_client
+        - id: jushi-user
+          uri: lb://jushi-user
+          predicates:
+            - Path=/api/user/** # 如果请求地址满足/to_client/**,则转发到 service-client 服务
+          filters:
+            - StripPrefix=2 # 去除请求地址中的to_client
 
 management:
   endpoints:
