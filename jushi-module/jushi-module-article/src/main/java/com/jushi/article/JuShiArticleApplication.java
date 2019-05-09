@@ -9,7 +9,7 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 @EnableDiscoveryClient
 @SpringBootApplication
 @EnableGlobalMethodSecurity(prePostEnabled = true)
-@ComponentScan(basePackages = {"com.jushi.security.client","com.jushi.article"})
+@ComponentScan(basePackages = {"com.jushi.security.client","com.jushi.article","com.jushi.api"})
 public class JuShiArticleApplication {
 
     public static void main(String[] args) {

@@ -15,6 +15,7 @@
         <module>jushi-module-article</module>
         <module>jushi-module-user</module>
         <module>jushi-module-api</module>
+        <module>jushi-model-common</module>
     </modules>
 
 
