@@ -16,7 +16,6 @@ import java.io.Serializable;
 @Accessors(chain = true)
 public class SysUser implements Serializable{
     @Id
-    @GeneratedValue(strategy= GenerationType.IDENTITY)
     private Long id;//
     private String created_by;//
     private java.util.Date created_date;//
