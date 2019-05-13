@@ -49,14 +49,14 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
     @Override
     public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
         clients.inMemory()
-                .withClient("android")
+                .withClient("web")
                 .scopes("xx")
                 //.secret("android")
-                .secret(passwordEncoder.encode("android"))
+                .secret(passwordEncoder.encode("web"))
                 .authorizedGrantTypes("password", "authorization_code", "refresh_token")
             .and()
                 .withClient("webapp")
-                .scopes("xx")
+                .scopes("web")
                 .authorizedGrantTypes("implicit");
     }
 }

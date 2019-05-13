@@ -1,8 +1,8 @@
 server:
-  port: 10020
+  port: 10030
 spring:
   application:
-    name: jushi-user
+    name: jushi-admin
   cloud:
     nacos:
       discovery:
@@ -17,6 +17,8 @@ spring:
     show-sql: true
     hibernate:
       ddl-auto: update
+      naming:
+        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
     properties:
       hibernate:
         temp:
@@ -39,10 +41,6 @@ management:
 security:
   oauth2:
     resource:
-      id: jushi-user
+      id: jushi-article
       user-info-uri: http://localhost:8001/api/uaa/user
       prefer-token-info: false
-#debug
-#logging:
-#  level:
-#    root: debug

@@ -1,15 +1,17 @@
 package com.jushi.api.pojo;
 
 import lombok.Data;
+import lombok.experimental.Accessors;
 
 import java.io.Serializable;
 
 @Data
-public class Result implements Serializable {
+@Accessors(chain = true)
+public class Result<T> implements Serializable {
     private boolean flag;
     private String code;
     private String message;
-    private  Object data;
+    private  T data;
     public static Result success(String message){
         return new Result(true, StatusCode.OK.value(),message);
     }
@@ -26,7 +28,7 @@ public class Result implements Serializable {
 
 
 
-    public Result(boolean flag, String code, String message, Object
+    public Result(boolean flag, String code, String message, T
             data) {
         super();
         this.flag = flag;

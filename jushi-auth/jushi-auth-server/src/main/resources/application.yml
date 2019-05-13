@@ -39,3 +39,7 @@ security:
   oauth2:
     resource:
       filter-order: 3
+#debug
+#logging:
+#  level:
+#    root: debug

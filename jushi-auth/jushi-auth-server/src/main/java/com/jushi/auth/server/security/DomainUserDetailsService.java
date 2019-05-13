@@ -27,7 +27,6 @@ public class DomainUserDetailsService implements UserDetailsService {
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         String lowcaseUsername = username.toLowerCase();
         Optional<SysUser> realUser = sysUserRepository.findOneWithRolesByUsername(lowcaseUsername);
-
         return realUser.map(user -> {
             Set<GrantedAuthority> grantedAuthorities = user.getAuthorities();
             return new User(user.getUsername(),user.getPassword(),grantedAuthorities);

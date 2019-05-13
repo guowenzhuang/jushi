@@ -34,6 +34,12 @@ spring:
             - Path=/api/user/** # 如果请求地址满足/to_client/**,则转发到 service-client 服务
           filters:
             - StripPrefix=2 # 去除请求地址中的to_client
+        - id: jushi-admin
+          uri: lb://jushi-admin
+          predicates:
+            - Path=/api/admin/** # 如果请求地址满足/to_client/**,则转发到 service-client 服务
+          filters:
+            - StripPrefix=2 # 去除请求地址中的to_client
 
 management:
   endpoints:
@@ -49,3 +55,7 @@ security:
     resource:
       user-info-uri: http://localhost:8001/api/uaa/user
       prefer-token-info: false
+#debug
+#logging:
+#  level:
+#    root: debug

@@ -23,7 +23,6 @@ import java.util.Set;
 @EqualsAndHashCode(callSuper = false)
 public class SysUser extends AbstractAuditingEntity{
     @Id
-    @GeneratedValue
     private Long id;
 
     @NotNull

@@ -5,7 +5,7 @@ import com.jushi.api.util.IdWorker;
 import com.jushi.api.pojo.Result;
 import com.jushi.api.util.EmptyUtils;
 import com.jushi.user.dao.UserDao;
-import com.jushi.user.pojo.SysUser;
+import com.jushi.user.pojo.po.SysUser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
