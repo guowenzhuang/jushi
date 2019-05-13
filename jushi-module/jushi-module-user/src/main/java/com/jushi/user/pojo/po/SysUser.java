@@ -1,21 +1,22 @@
 package com.jushi.user.pojo.po;
 
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 import lombok.experimental.Accessors;
 
-import javax.persistence.*;
 import java.io.Serializable;
 /**
  * 实体类
  * @author Administrator
  *
  */
-@Entity
-@Table(name="sys_user")
 @Data
 @Accessors(chain = true)
+@TableName("sys_user")
 public class SysUser implements Serializable{
-    @Id
+    @TableId(value = "id",type= IdType.ID_WORKER)
     private Long id;
     private String created_by;
     private java.util.Date created_date;
