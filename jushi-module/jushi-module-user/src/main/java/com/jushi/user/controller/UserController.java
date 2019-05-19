@@ -2,7 +2,7 @@ package com.jushi.user.controller;
 
 import com.jushi.api.pojo.Result;
 import com.jushi.api.pojo.StatusCode;
-import com.jushi.user.pojo.po.SysUser;
+import com.jushi.user.pojo.po.SysUserPO;
 import com.jushi.user.service.impl.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -22,7 +22,7 @@ public class UserController {
 
 
 	@PostMapping("/register")
-	public Result userRegister(@RequestBody  SysUser sysUser){
+	public Result userRegister(@RequestBody SysUserPO sysUser){
 		if(sysUser==null){
 			return new Result(false, StatusCode.PARAMETERILLEGAL.value(),"参数不合法");
 		}

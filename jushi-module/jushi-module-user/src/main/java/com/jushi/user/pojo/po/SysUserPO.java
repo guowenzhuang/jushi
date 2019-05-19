@@ -15,7 +15,7 @@ import java.io.Serializable;
 @Data
 @Accessors(chain = true)
 @TableName("sys_user")
-public class SysUser implements Serializable{
+public class SysUserPO implements Serializable{
     @TableId(value = "id",type= IdType.ID_WORKER)
     private Long id;
     private String created_by;

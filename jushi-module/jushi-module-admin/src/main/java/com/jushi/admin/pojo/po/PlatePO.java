@@ -1,21 +1,21 @@
 package com.jushi.admin.pojo.po;
 
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 import lombok.experimental.Accessors;
+import org.springframework.data.annotation.Id;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
 
-@Entity
-@Table(name = "plate")
 @Data
 @Accessors(chain = true)
-public class Plate {
+@TableName("plate")
+public class PlatePO {
     /**
      * id
      */
-    @Id
+    @TableId(value = "id",type= IdType.ID_WORKER)
     private Long id;
     /**
      * 名称

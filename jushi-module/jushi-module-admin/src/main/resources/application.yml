@@ -44,3 +44,16 @@ security:
       id: jushi-article
       user-info-uri: http://localhost:8001/api/uaa/user
       prefer-token-info: false
+
+mybatis-plus:
+  # xml
+  mapper-locations: classpath:mapper/*Mapper.xml
+  # 实体扫描，多个package用逗号或者分号分隔
+  type-aliases-package: com.jushi.admin.pojo
+  configuration:
+    # 这个配置会将执行的sql打印出来，在开发或测试的时候可以用
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+      #debug
+      #logging:
+      #  level:
+    #    root: debug
