@@ -9,24 +9,28 @@ spring:
         server-addr: 127.0.0.1:8848
     sentinel:
       transport:
-        dashboard: localhost:8080
+        dashboard: localhost:6524
       eager: true
-  jpa:
-    open-in-view: true
-    database: POSTGRESQL
-    show-sql: true
-    hibernate:
-      ddl-auto: update
-    properties:
-      hibernate:
-        temp:
-          use_jdbc_metadata_defaults: false
   datasource:
     platform: postgres
-    url: jdbc:postgresql://localhost:5432/auth
+    url: jdbc:postgresql://45.76.203.138:5432/jushi
     username: postgres
     password: 123456
     driver-class-name: org.postgresql.Driver
+    druid:
+      minIdle: 5
+      web-stat-filter:
+        enabled: true
+      stat-view-servlet:
+        allow: 127.0.0.1
+        url-pattern: /druid/*
+        login-password: druid123123
+        login-username: druid
+      initialSize: 5
+      WebStatFilter:
+        exclusions:
+      maxActive: 30
+      type: com.alibaba.druid.pool.DruidDataSource
   redis:
     host: localhost
 management:
