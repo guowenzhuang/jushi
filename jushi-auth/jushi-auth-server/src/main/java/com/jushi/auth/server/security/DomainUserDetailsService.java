@@ -10,6 +10,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
+import java.util.Base64;
 import java.util.Optional;
 import java.util.Set;
 
@@ -29,6 +30,8 @@ public class DomainUserDetailsService implements UserDetailsService {
         Optional<SysUser> realUser = sysUserRepository.findOneWithRolesByUsername(lowcaseUsername);
         return realUser.map(user -> {
             Set<GrantedAuthority> grantedAuthorities = user.getAuthorities();
+            Base64.Encoder encoder = Base64.getEncoder();
+            user.setPassword(encoder.encodeToString(user.getPassword().getBytes()));
             return new User(user.getUsername(),user.getPassword(),grantedAuthorities);
         }).orElseThrow(() -> new UsernameNotFoundException("用户" + lowcaseUsername + "不存在!"));
     }
