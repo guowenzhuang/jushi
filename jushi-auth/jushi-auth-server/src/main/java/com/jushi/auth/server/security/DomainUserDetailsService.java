@@ -9,6 +9,9 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import sun.security.util.Password;
 
 import java.util.Base64;
 import java.util.Optional;
@@ -24,15 +27,15 @@ public class DomainUserDetailsService implements UserDetailsService {
     @Autowired
     private SysUserRepository sysUserRepository;
 
+
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         String lowcaseUsername = username.toLowerCase();
         Optional<SysUser> realUser = sysUserRepository.findOneWithRolesByUsername(lowcaseUsername);
         return realUser.map(user -> {
             Set<GrantedAuthority> grantedAuthorities = user.getAuthorities();
-            Base64.Encoder encoder = Base64.getEncoder();
-            user.setPassword(encoder.encodeToString(user.getPassword().getBytes()));
-            return new User(user.getUsername(),user.getPassword(),grantedAuthorities);
+            return new User(user.getUsername(), user.getPassword(), grantedAuthorities);
         }).orElseThrow(() -> new UsernameNotFoundException("用户" + lowcaseUsername + "不存在!"));
     }
+
 }
