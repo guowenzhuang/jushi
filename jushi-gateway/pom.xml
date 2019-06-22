@@ -35,9 +35,6 @@
             <artifactId>spring-boot-starter-actuator</artifactId>
         </dependency>
 
-        <!-- https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-security -->
-
-
 
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -55,16 +52,6 @@
             </exclusions>
         </dependency>
 
-        <!-- <dependency>
-             <groupId>org.springframework.cloud</groupId>
-             <artifactId>spring-cloud-starter-oauth2</artifactId>
-             <exclusions>
-                 <exclusion>
-                     <groupId>org.springframework.boot</groupId>
-                     <artifactId>spring-boot-starter-web</artifactId>
-                 </exclusion>
-             </exclusions>
-         </dependency>-->
         
     </dependencies>
 

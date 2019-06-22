@@ -1,23 +1,27 @@
-package com.jushi.user.pojo.po;
+package com.jushi.admin.pojo.po;
 
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
-import java.io.Serializable;
 /**
  * 实体类
  * @author Administrator
  *
  */
 @Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 @Accessors(chain = true)
-@TableName("sys_user")
-public class SysUserPO implements Serializable{
-    @TableId(value = "id",type= IdType.ID_WORKER)
-    private Long id;
+@Document(collection = "sys_user")
+public class SysUserPO{
+    @Id
+    private String id;
     private String created_by;
     private java.util.Date created_date;
     private String last_modified_by;

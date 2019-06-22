@@ -1,0 +1,12 @@
+package com.jushi.api.util;
+
+import com.jushi.api.exception.CheckException;
+
+
+public class CheckUtil {
+    public static void checkEmpty(String field,String value){
+        if (EmptyUtils.isEmpty(value)) {
+            throw new CheckException(field,value,field+" 不能为null");
+        }
+    }
+}

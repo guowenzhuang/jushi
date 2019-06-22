@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.hibernate.annotations.BatchSize;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 import javax.persistence.*;
 import java.util.HashSet;
@@ -12,11 +13,12 @@ import java.util.Set;
 @Entity
 @Data
 @EqualsAndHashCode(callSuper = false)
+@Document(collection = "sys_role")
 public class SysRole extends AbstractAuditingEntity{
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue
-    private Long id;
+    private String id;
     private String name;
     private String value;
 

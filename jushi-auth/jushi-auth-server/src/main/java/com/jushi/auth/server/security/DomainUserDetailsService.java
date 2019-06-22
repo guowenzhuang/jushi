@@ -9,11 +9,7 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import sun.security.util.Password;
 
-import java.util.Base64;
 import java.util.Optional;
 import java.util.Set;
 
@@ -37,5 +33,6 @@ public class DomainUserDetailsService implements UserDetailsService {
             return new User(user.getUsername(), user.getPassword(), grantedAuthorities);
         }).orElseThrow(() -> new UsernameNotFoundException("用户" + lowcaseUsername + "不存在!"));
     }
+
 
 }

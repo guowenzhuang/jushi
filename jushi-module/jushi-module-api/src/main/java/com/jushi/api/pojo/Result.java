@@ -1,12 +1,14 @@
 package com.jushi.api.pojo;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
-import lombok.experimental.Accessors;
 
 import java.io.Serializable;
 
 @Data
-@Accessors(chain = true)
+@Builder
+@AllArgsConstructor
 public class Result<T> implements Serializable {
     private boolean flag;
     private String code;
@@ -28,18 +30,13 @@ public class Result<T> implements Serializable {
 
 
 
-    public Result(boolean flag, String code, String message, T
-            data) {
-        super();
-        this.flag = flag;
-        this.code = code;
-        this.message = message;
-        this.data = data;
-    }
+
     public Result(boolean flag, String code, String message) {
-        super();
         this.flag = flag;
         this.code = code;
         this.message = message;
+    }
+
+    public Result() {
     }
 }

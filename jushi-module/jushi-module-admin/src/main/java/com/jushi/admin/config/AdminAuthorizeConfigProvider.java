@@ -10,8 +10,8 @@ public class AdminAuthorizeConfigProvider implements AuthorizeConfigProvider {
 
     @Override
     public void config(ExpressionUrlAuthorizationConfigurer<HttpSecurity>.ExpressionInterceptUrlRegistry config) {
-                config
+           /*     config
                 .antMatchers("/plate/getTop10")
-                .permitAll();
+                .permitAll();*/
     }
 }
