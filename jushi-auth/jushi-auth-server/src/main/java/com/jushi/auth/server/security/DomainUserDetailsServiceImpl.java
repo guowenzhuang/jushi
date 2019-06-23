@@ -16,9 +16,8 @@ import java.util.Set;
 /**
  * Created by wangyunfei on 2017/6/9.
  */
-//@Service("userDetailsService")
 @Slf4j
-public class DomainUserDetailsService implements UserDetailsService {
+public class DomainUserDetailsServiceImpl implements UserDetailsService {
 
     @Autowired
     private SysUserRepository sysUserRepository;

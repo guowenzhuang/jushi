@@ -12,7 +12,6 @@
         <module>jushi-module</module>
         <module>jushi-gateway</module>
         <module>jushi-auth</module>
-
     </modules>
     <parent>
         <groupId>org.springframework.boot</groupId>
@@ -41,18 +40,18 @@
 
 
     <build>
-        <resources>
+      <!--  <resources>
             <resource>
                 <directory>src/main/resources</directory>
             </resource>
-            <resource>   <!-- 将jar统一打进lib目录下 -->
+            <resource>   &lt;!&ndash; 将jar统一打进lib目录下 &ndash;&gt;
                 <directory>src/main/resources/lib</directory>
                 <targetPath>BOOT-INF/lib</targetPath>
             </resource>
-        </resources>
+        </resources>-->
 
         <!-- 配置打包及打包后的项目存放路径 outputDirectory -->
-        <plugins>
+      <!--  <plugins>
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
@@ -62,7 +61,7 @@
                     <jvmArguments>-Dfile.encoding=UTF-8</jvmArguments>
                 </configuration>
             </plugin>
-        </plugins>
+        </plugins>-->
 
     </build>
 

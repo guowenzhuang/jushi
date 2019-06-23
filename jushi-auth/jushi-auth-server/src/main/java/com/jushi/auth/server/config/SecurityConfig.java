@@ -1,6 +1,6 @@
 package com.jushi.auth.server.config;
 
-import com.jushi.auth.server.security.DomainUserDetailsService;
+import com.jushi.auth.server.security.DomainUserDetailsServiceImpl;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -17,8 +17,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 
     @Bean
+    @Override
     public UserDetailsService userDetailsService(){
-        return new DomainUserDetailsService();
+        return new DomainUserDetailsServiceImpl();
     }
 
     @Bean

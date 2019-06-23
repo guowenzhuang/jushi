@@ -1,18 +1,13 @@
 package com.jushi.security.client.config;
 
-import com.jushi.security.common.config.AuthorizeConfigManager;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableResourceServer;
 import org.springframework.security.oauth2.config.annotation.web.configuration.ResourceServerConfigurerAdapter;
-
-import javax.servlet.http.HttpServletResponse;
 
 @Configuration
 @EnableResourceServer
 public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
-    @Autowired
+/*    @Autowired
     private AuthorizeConfigManager authorizeConfigManager;
 
     @Override
@@ -28,5 +23,5 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
                 .and()
                 .httpBasic();
 
-    }
+    }*/
 }

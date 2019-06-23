@@ -14,7 +14,7 @@ public class CheckException extends RuntimeException {
     /**
      * 出错字段值
      */
-    private String fieldValue;
+    private Object fieldValue;
     /**
      * 错误描述
      */
@@ -41,12 +41,12 @@ public class CheckException extends RuntimeException {
         super();
     }
 
-    public CheckException(String fieldName, String fieldValue) {
+    public CheckException(String fieldName, Object fieldValue) {
         this.fieldName = fieldName;
         this.fieldValue = fieldValue;
     }
 
-    public CheckException(String fieldName, String fieldValue,String description) {
+    public CheckException(String fieldName, Object fieldValue,String description) {
         this.fieldName = fieldName;
         this.fieldValue = fieldValue;
         this.description = description;

@@ -1,20 +1,15 @@
-package com.jushi.admin.config;
+package com.jushi.gateway.config;
 
 import com.jushi.security.common.config.AuthorizeConfigProvider;
 import org.springframework.security.config.web.server.ServerHttpSecurity;
 import org.springframework.stereotype.Component;
 
-/**
- * @author 80795
- */
 @Component
-public class AdminAuthorizeConfigProvider implements AuthorizeConfigProvider {
+public class GateWayAuthorizeConfigProvider implements AuthorizeConfigProvider {
 
 
     @Override
     public void config(ServerHttpSecurity.AuthorizeExchangeSpec config) {
-        config
-                .pathMatchers("/user/register")
-                .permitAll();
+        config.pathMatchers("/api/**").permitAll();
     }
 }

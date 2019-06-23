@@ -1,4 +1,4 @@
-package com.jushi.admin.config;
+package com.jushi.api.config;
 
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.NoSuchBeanDefinitionException;

@@ -1,4 +1,4 @@
-package com.jushi.admin.pojo.po;
+package com.jushi.api.pojo.po;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -6,8 +6,14 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.Field;
+
+import java.util.List;
 
 
+/**
+ * @author 80795
+ */
 @Data
 @Builder
 @NoArgsConstructor
@@ -26,10 +32,12 @@ public class PlatePO {
     /**
      * 点击次数
      */
+    @Field("click_count")
     private Long clickCount;
     /**
      * 主贴数量
      */
+    @Field("topic_count")
     private Long topicCount;
     /**
      * 权重
@@ -38,5 +46,9 @@ public class PlatePO {
     /**
      * 状态
      */
-    private String state;
+    private Boolean state;
+    /**
+     * 帖子列表
+     */
+    private List<ArticlePO> articlePOS;
 }

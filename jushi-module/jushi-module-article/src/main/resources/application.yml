@@ -7,32 +7,11 @@ spring:
     nacos:
       discovery:
         server-addr: 127.0.0.1:8848
-    sentinel:
-      transport:
-        dashboard: localhost:6524
-      eager: true
-  datasource:
-    platform: postgres
-    url: jdbc:postgresql://45.76.203.138:5432/jushi
-    username: postgres
-    password: 123456
-    driver-class-name: org.postgresql.Driver
-    druid:
-      minIdle: 5
-      web-stat-filter:
-        enabled: true
-      stat-view-servlet:
-        allow: 127.0.0.1
-        url-pattern: /druid/*
-        login-password: druid123123
-        login-username: druid
-      initialSize: 5
-      WebStatFilter:
-        exclusions:
-      maxActive: 30
-      type: com.alibaba.druid.pool.DruidDataSource
   redis:
     host: localhost
+  data:
+    mongodb:
+      uri: mongodb://localhost:27017/jushi
 management:
   security:
     enabled: false
@@ -47,8 +26,12 @@ security:
       user-info-uri: http://localhost:8001/api/uaa/user
       prefer-token-info: false
 
-      #debug
-      #logging:
-      #  level:
-      #    root: debug
+logging:
+  level:
+    #root: debug
+    org.springframework.data.mongodb.core: DEBUG
+#debug
+#logging:
+#  level:
+#    root: debug
 

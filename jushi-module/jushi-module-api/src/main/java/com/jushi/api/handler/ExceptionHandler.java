@@ -1,9 +1,10 @@
-package com.jushi.admin.handler;
+package com.jushi.api.handler;
 
 import com.alibaba.fastjson.JSON;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jushi.api.exception.CheckException;
 import com.jushi.api.pojo.Result;
+import com.jushi.api.pojo.StatusCode;
 import org.springframework.core.annotation.Order;
 import org.springframework.core.io.buffer.DataBuffer;
 import org.springframework.http.HttpStatus;
@@ -15,10 +16,11 @@ import org.springframework.web.server.WebExceptionHandler;
 import reactor.core.publisher.Mono;
 
 /**
+ * 异常处理
+ * @Order(-1) 异常等级调高
  * @author 80795
  */
 @Component
-//异常等级调高
 @Order(-1)
 public class ExceptionHandler implements WebExceptionHandler {
 
@@ -38,7 +40,7 @@ public class ExceptionHandler implements WebExceptionHandler {
 
     private String toStr(Throwable ex) {
         Result result = new Result();
-        result.setCode(HttpStatus.BAD_REQUEST.value() + "");
+        result.setCode(StatusCode.ERROR);
         result.setFlag(false);
         result.setData(ex);
         //已知异常

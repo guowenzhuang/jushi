@@ -30,8 +30,5 @@ security:
 
 logging:
   level:
+    #root: debug
     org.springframework.data.mongodb.core: DEBUG
-#debug
-#logging:
-#  level:
-#    root: debug

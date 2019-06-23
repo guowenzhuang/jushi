@@ -9,7 +9,6 @@ import org.springframework.data.domain.AuditorAware;
 
 @EnableDiscoveryClient
 @SpringBootApplication
-
 public class JuShiAuthServerApplication {
     @Bean(name = "auditorAware")
     public AuditorAware<String> auditorAware() {
