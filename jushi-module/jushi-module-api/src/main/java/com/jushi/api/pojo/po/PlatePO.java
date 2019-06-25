@@ -50,5 +50,5 @@ public class PlatePO {
     /**
      * 帖子列表
      */
-    private List<ArticlePO> articlePOS;
+    private List<ArticlePO> articles;
 }

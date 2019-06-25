@@ -29,13 +29,13 @@ public class ArticlePO {
      * 板块id
      */
     @DBRef
-    private PlatePO platePO;
+    private PlatePO plate;
 
     /**
      * 所属用户
      */
     @DBRef
-    private SysUserPO sysUserPO;
+    private SysUserPO sysUser;
     /**
      * 文章标题
      */

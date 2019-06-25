@@ -70,7 +70,7 @@ public class DBDataInit {
                     return Mono.just(ArticlePO
                             .builder()
                             .title(savePlate.getName() + " 测试标题")
-                            .platePO(savePlate)
+                            .plate(savePlate)
                             .build()).flatMap(articlePO -> {
                         return articleRepository.save(articlePO);
                     });
@@ -98,8 +98,8 @@ public class DBDataInit {
                                 .likeCount(0L)
                                 .commentCount(0L)
                                 .auditState(Boolean.TRUE)
-                                .sysUserPO(SysUserPO.builder().id("5d0db24cb5709c0a2879dee1").build())
-                                .platePO(PlatePO.builder().id("5d0f76a4e60170361824b2ba").build())
+                                .sysUser(SysUserPO.builder().id("5d0db24cb5709c0a2879dee1").build())
+                                .plate(PlatePO.builder().id("5d0f76a4e60170361824b2ba").build())
                                 .build()).flatMap(articlePO -> {
                     return articleRepository.save(articlePO);
                 }).subscribe();

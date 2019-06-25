@@ -44,6 +44,6 @@ public class SysUserPO {
     private String password;
     private String username;
     @DBRef
-    private List<ArticlePO> articlePOS;
+    private List<ArticlePO> articles;
 
 }
