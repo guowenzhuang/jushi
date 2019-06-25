@@ -1,11 +1,13 @@
 package com.jushi.article.handler;
 
+import com.jushi.api.exception.CheckException;
 import com.jushi.api.pojo.Result;
 import com.jushi.api.pojo.po.ArticlePO;
 import com.jushi.api.util.CheckUtil;
 import com.jushi.article.pojo.query.ArticlePageQuery;
 import com.jushi.article.repository.ArticleRepository;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.beanutils.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -13,13 +15,18 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.ReactiveMongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
+import org.springframework.util.MultiValueMap;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.reactive.function.server.ServerRequest;
 import org.springframework.web.reactive.function.server.ServerResponse;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.concurrent.TimeUnit;
+import java.util.stream.IntStream;
 
 /**
  * @author 80795
@@ -29,10 +36,7 @@ import java.util.concurrent.TimeUnit;
 @Component
 public class ArticleHandler {
     @Autowired
-    private ArticleRepository articleRepository;
-    @Autowired
     private ReactiveMongoTemplate reactiveMongoTemplate;
-
 
     /**
      * 帖子首页分页查询
@@ -42,6 +46,31 @@ public class ArticleHandler {
      */
     public Mono<ServerResponse> articleHomePage(ServerRequest request) {
         Mono<ArticlePageQuery> articlePageQueryMono = request.bodyToMono(ArticlePageQuery.class);
+        return articleHomePageWith(articlePageQueryMono, Boolean.FALSE);
+    }
+
+    /**
+     * 帖子首页分页查询(SSE)
+     *
+     * @param request
+     * @return
+     */
+    public Mono<ServerResponse> articleHomePageSSE(ServerRequest request) {
+        //转换参数
+        MultiValueMap<String, String> multiValueMap = request.queryParams();
+        ArticlePageQuery articlePageQuery = new ArticlePageQuery();
+        try {
+            BeanUtils.populate(articlePageQuery, multiValueMap);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ServerResponse.ok().body(Mono.just(Result.error("参数转换错误")), Result.class);
+        }
+
+        return articleHomePageWith(Mono.just(articlePageQuery), Boolean.TRUE);
+    }
+
+
+    private Mono<ServerResponse> articleHomePageWith(Mono<ArticlePageQuery> articlePageQueryMono, Boolean isSSE) {
         return articlePageQueryMono.flatMap(articlePageQuery -> {
             checkArticleHomePage(articlePageQuery);
             //封装查询条件
@@ -51,18 +80,21 @@ public class ArticleHandler {
             //分页
             Pageable pageable = PageRequest.of(articlePageQuery.getPage(), articlePageQuery.getSize(), sort);
             //获取数据
-            Flux<ArticlePO> objectFlux = reactiveMongoTemplate.find(query.with(pageable), ArticlePO.class);
-            return objectFlux.flatMap(item -> {
+            Flux<ArticlePO> articlePOFlux = reactiveMongoTemplate.find(query.with(pageable), ArticlePO.class);
+            Flux<ArticlePO> articlePOFlux1 = articlePOFlux.flatMap(item -> {
                 try {
                     TimeUnit.SECONDS.sleep(1);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
                 return Mono.just(item);
-            }).then(ServerResponse.ok()
-                    .body(objectFlux, ArticlePO.class));
-
-        }).switchIfEmpty(ServerResponse.ok().body(Mono.just(Result.error("分页查询帖子参数不能为null")), Result.class));
+            });
+            if (isSSE)
+                return ServerResponse.ok().contentType(MediaType.TEXT_EVENT_STREAM).body(articlePOFlux1, ArticlePO.class);
+            else
+                return ServerResponse.ok().contentType(MediaType.APPLICATION_JSON_UTF8).body(articlePOFlux1, ArticlePO.class);
+        })
+                .switchIfEmpty(ServerResponse.ok().body(Mono.just(Result.error("分页查询帖子参数不能为null")), Result.class));
 
     }
 
