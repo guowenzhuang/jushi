@@ -19,6 +19,8 @@ import org.springframework.web.reactive.function.server.ServerResponse;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.util.concurrent.TimeUnit;
+
 /**
  * @author 80795
  * @date 2019/6/23 21:20
@@ -30,6 +32,7 @@ public class ArticleHandler {
     private ArticleRepository articleRepository;
     @Autowired
     private ReactiveMongoTemplate reactiveMongoTemplate;
+
 
     /**
      * 帖子首页分页查询
@@ -48,9 +51,16 @@ public class ArticleHandler {
             //分页
             Pageable pageable = PageRequest.of(articlePageQuery.getPage(), articlePageQuery.getSize(), sort);
             //获取数据
-            Flux<ArticlePO> objectFlux = reactiveMongoTemplate.find(query.with(pageable),ArticlePO.class);
-             return ServerResponse.ok()
-                    .body(objectFlux,ArticlePO.class);
+            Flux<ArticlePO> objectFlux = reactiveMongoTemplate.find(query.with(pageable), ArticlePO.class);
+            return objectFlux.flatMap(item -> {
+                try {
+                    TimeUnit.SECONDS.sleep(1);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                return Mono.just(item);
+            }).then(ServerResponse.ok()
+                    .body(objectFlux, ArticlePO.class));
 
         }).switchIfEmpty(ServerResponse.ok().body(Mono.just(Result.error("分页查询帖子参数不能为null")), Result.class));
 

@@ -23,8 +23,18 @@ public class ArticleRouters {
                 RouterFunctions.route(
                         //相当于方法上面的GetMapping
                         //获取所有用户
-                        RequestPredicates.POST("/articleHomePage")
+                        RequestPredicates.GET("/articleHomePage"),
+                        articleHandler::articleHomePage)
+                .andRoute( RequestPredicates.GET("/stream/articleHomePage")
+                        .and(RequestPredicates.contentType(MediaType.TEXT_EVENT_STREAM)),
+                        articleHandler::articleHomePage)
+
+                .andRoute( RequestPredicates.POST("/articleHomePage")
                                 .and(RequestPredicates.accept(MediaType.APPLICATION_JSON_UTF8)),
+                        articleHandler::articleHomePage)
+
+                .andRoute( RequestPredicates.POST("/stream/articleHomePage")
+                        .and(RequestPredicates.contentType(MediaType.TEXT_EVENT_STREAM)),
                         articleHandler::articleHomePage)
 
         );
