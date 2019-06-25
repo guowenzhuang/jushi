@@ -34,21 +34,24 @@ public class UserHandler {
     public Mono<ServerResponse> userRegister(ServerRequest request) {
         Mono<SysUserPO> userMono = request.bodyToMono(SysUserPO.class);
         return userMono.flatMap(u -> {
+            //检查必填字段
             userRegisterCheck(u);
             SysUserPO sysUserName = SysUserPO
                     .builder()
                     .username(u.getUsername())
                     .build();
             Example<SysUserPO> example = Example.of(sysUserName);
+            //查询名称是否已有
             log.info("查询是否有重名用户 入参为 username:{}", sysUserName.getUsername());
             return userRepository.exists(example).flatMap(is -> {
                 if (is) {
                     throw new CheckException("用户", sysUserName.getUsername(), "此用户已存在");
                 }
-
+                //加密信息
                 u.setPassword(encoder.encode(u.getPassword()))
                         .setCreatedBy(u.getUsername())
                         .setCreatedDate(new Date());
+                //保存用户
                 Mono<SysUserPO> saveUser = userRepository.save(u);
                 return saveUser.flatMap(saUser -> {
                     return ServerResponse.ok()

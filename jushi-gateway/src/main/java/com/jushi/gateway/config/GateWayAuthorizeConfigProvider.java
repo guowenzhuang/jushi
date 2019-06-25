@@ -10,6 +10,10 @@ public class GateWayAuthorizeConfigProvider implements AuthorizeConfigProvider {
 
     @Override
     public void config(ServerHttpSecurity.AuthorizeExchangeSpec config) {
-        config.pathMatchers("/api/**").permitAll();
+        config
+                .pathMatchers("/api/uaa/**",
+                        "/api/article/**",
+                        "/api/admin/**")
+                .permitAll();
     }
 }
