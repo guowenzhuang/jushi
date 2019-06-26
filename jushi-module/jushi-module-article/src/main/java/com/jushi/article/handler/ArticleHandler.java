@@ -1,11 +1,9 @@
 package com.jushi.article.handler;
 
-import com.jushi.api.exception.CheckException;
 import com.jushi.api.pojo.Result;
 import com.jushi.api.pojo.po.ArticlePO;
 import com.jushi.api.util.CheckUtil;
 import com.jushi.article.pojo.query.ArticlePageQuery;
-import com.jushi.article.repository.ArticleRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.beanutils.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,15 +16,12 @@ import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
 import org.springframework.util.MultiValueMap;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.reactive.function.server.ServerRequest;
 import org.springframework.web.reactive.function.server.ServerResponse;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.concurrent.TimeUnit;
-import java.util.stream.IntStream;
 
 /**
  * @author 80795
@@ -65,8 +60,8 @@ public class ArticleHandler {
             e.printStackTrace();
             return ServerResponse.ok().body(Mono.just(Result.error("参数转换错误")), Result.class);
         }
-
         return articleHomePageWith(Mono.just(articlePageQuery), Boolean.TRUE);
+
     }
 
 
@@ -90,7 +85,7 @@ public class ArticleHandler {
                 return Mono.just(item);
             });
             if (isSSE)
-                return ServerResponse.ok().contentType(MediaType.TEXT_EVENT_STREAM).body(articlePOFlux1, ArticlePO.class);
+                return ServerResponse.ok().contentType(MediaType.TEXT_EVENT_STREAM).header("X-Accel-Buffering","no").body(articlePOFlux1, ArticlePO.class);
             else
                 return ServerResponse.ok().contentType(MediaType.APPLICATION_JSON_UTF8).body(articlePOFlux1, ArticlePO.class);
         })
