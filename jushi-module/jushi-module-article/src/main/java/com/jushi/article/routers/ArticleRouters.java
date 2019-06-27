@@ -13,7 +13,7 @@ import org.springframework.web.reactive.function.server.*;
 @Configuration
 public class ArticleRouters {
     @Bean
-    RouterFunction<ServerResponse> userRouter(ArticleHandler articleHandler) {
+    RouterFunction<ServerResponse> articeHandle(ArticleHandler articleHandler) {
         return RouterFunctions.nest(
                 //相当于类上面的@RequestMapping
                 RequestPredicates.path("/"),

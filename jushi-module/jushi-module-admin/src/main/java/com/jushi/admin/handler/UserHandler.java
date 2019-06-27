@@ -55,8 +55,8 @@ public class UserHandler {
                 Mono<SysUserPO> saveUser = userRepository.save(u);
                 return saveUser.flatMap(saUser -> {
                     return ServerResponse.ok()
-                            .body(Mono.just(Result.success("创建用户成功",saUser))
-                                    , Result.class);
+                            .body(Mono.just(saUser)
+                                    , SysUserPO.class);
                 });
 
             });

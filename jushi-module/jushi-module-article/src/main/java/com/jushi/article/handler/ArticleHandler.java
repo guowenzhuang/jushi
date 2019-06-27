@@ -21,8 +21,6 @@ import org.springframework.web.reactive.function.server.ServerResponse;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import java.util.concurrent.TimeUnit;
-
 /**
  * @author 80795
  * @date 2019/6/23 21:20
@@ -30,6 +28,9 @@ import java.util.concurrent.TimeUnit;
 @Slf4j
 @Component
 public class ArticleHandler {
+    /**
+     * mongo模板
+     */
     @Autowired
     private ReactiveMongoTemplate reactiveMongoTemplate;
 
@@ -76,18 +77,10 @@ public class ArticleHandler {
             Pageable pageable = PageRequest.of(articlePageQuery.getPage(), articlePageQuery.getSize(), sort);
             //获取数据
             Flux<ArticlePO> articlePOFlux = reactiveMongoTemplate.find(query.with(pageable), ArticlePO.class);
-            Flux<ArticlePO> articlePOFlux1 = articlePOFlux.flatMap(item -> {
-                try {
-                    TimeUnit.SECONDS.sleep(1);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-                return Mono.just(item);
-            });
             if (isSSE)
-                return ServerResponse.ok().contentType(MediaType.TEXT_EVENT_STREAM).header("X-Accel-Buffering","no").body(articlePOFlux1, ArticlePO.class);
+                return ServerResponse.ok().contentType(MediaType.TEXT_EVENT_STREAM).header("X-Accel-Buffering", "no").body(articlePOFlux, ArticlePO.class);
             else
-                return ServerResponse.ok().contentType(MediaType.APPLICATION_JSON_UTF8).body(articlePOFlux1, ArticlePO.class);
+                return ServerResponse.ok().contentType(MediaType.APPLICATION_JSON_UTF8).body(articlePOFlux, ArticlePO.class);
         })
                 .switchIfEmpty(ServerResponse.ok().body(Mono.just(Result.error("分页查询帖子参数不能为null")), Result.class));
 

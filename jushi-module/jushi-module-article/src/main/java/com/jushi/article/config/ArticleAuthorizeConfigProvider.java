@@ -10,7 +10,10 @@ public class ArticleAuthorizeConfigProvider implements AuthorizeConfigProvider {
     @Override
     public void config(ServerHttpSecurity.AuthorizeExchangeSpec config) {
         config
-                .pathMatchers("/**","/articleHomePage","/stream/articleHomePage")
+                .pathMatchers(
+                        "/articleHomePage",
+                        "/stream/articleHomePage",
+                        "/plate")
                 .permitAll();
     }
 }
