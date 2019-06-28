@@ -6,7 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 /**
- * 首页查询
+ * 板块查询
  * @author 80795
  * @date 2019/6/23 21:43
  */
@@ -14,7 +14,11 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class ArticlePageQuery {
+public class ArticlePageQueryByPlate {
+    /**
+     * 板块id
+     */
+    private String plateId;
     /**
      * 页数
      */
