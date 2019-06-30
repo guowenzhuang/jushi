@@ -14,7 +14,7 @@ public class AdminAuthorizeConfigProvider implements AuthorizeConfigProvider {
     @Override
     public void config(ServerHttpSecurity.AuthorizeExchangeSpec config) {
         config
-                .pathMatchers("/user/register")
+                .pathMatchers("/user/**")
                 .permitAll();
     }
 }

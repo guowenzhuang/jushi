@@ -58,7 +58,10 @@
             <artifactId>hutool-core</artifactId>
             <version>4.5.15</version>
         </dependency>
-
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-webflux</artifactId>
+        </dependency>
     </dependencies>
 
 </project>

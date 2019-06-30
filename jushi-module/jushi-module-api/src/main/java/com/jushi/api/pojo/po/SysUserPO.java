@@ -10,6 +10,7 @@ import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -23,7 +24,8 @@ import java.util.List;
 @AllArgsConstructor
 @Accessors(chain = true)
 @Document(collection = "sys_user")
-public class SysUserPO {
+public class SysUserPO implements Serializable {
+    private static final long serialVersionUID = -4292493510110770597L;
     @Id
     private String id;
     @Field("created_by")

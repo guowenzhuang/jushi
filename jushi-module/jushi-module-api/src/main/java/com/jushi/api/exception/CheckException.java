@@ -3,6 +3,7 @@ package com.jushi.api.exception;
 import lombok.Data;
 
 /**
+ * 字段值错误
  * @author 80795
  */
 @Data

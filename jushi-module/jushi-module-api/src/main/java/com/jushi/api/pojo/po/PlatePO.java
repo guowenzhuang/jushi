@@ -8,6 +8,7 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
+import java.io.Serializable;
 import java.util.List;
 
 
@@ -19,7 +20,8 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Document(collection = "plate")
-public class PlatePO {
+public class PlatePO implements Serializable {
+    private static final long serialVersionUID = 5822372900516005654L;
     /**
      * id
      */

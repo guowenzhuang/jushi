@@ -1,8 +1,10 @@
 package com.jushi.api.handler;
 
+import cn.hutool.core.util.StrUtil;
 import com.alibaba.fastjson.JSON;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jushi.api.exception.CheckException;
+import com.jushi.api.exception.FieldNameException;
 import com.jushi.api.pojo.Result;
 import com.jushi.api.pojo.StatusCode;
 import org.springframework.core.annotation.Order;
@@ -42,11 +44,15 @@ public class ExceptionHandler implements WebExceptionHandler {
         Result result = new Result();
         result.setCode(StatusCode.ERROR);
         result.setFlag(false);
-        result.setData(ex);
+        //result.setData(ex);
         //已知异常
         if (ex instanceof CheckException) {
             CheckException e = (CheckException) ex;
             result.setMessage("字段:"+e.getFieldName() +" 值:"+ e.getFieldValue() + " 描述: " + e.getDescription());
+        }
+        else if(ex instanceof FieldNameException){
+            FieldNameException e = (FieldNameException) ex;
+            result.setMessage(StrUtil.format("列名错误 应为列名:{},现在列名:{}",e.getFieldName(),e.getNowFieldName()));
         }
         //未知异常 需要打印堆栈,方便定位问题
         else {

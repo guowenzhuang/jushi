@@ -12,7 +12,7 @@
     <artifactId>jushi-module</artifactId>
     <packaging>pom</packaging>
     <modules>
-        <module>jushi-module-article</module>
+        <module>jushi-module-web</module>
         <module>jushi-module-api</module>
         <module>jushi-module-admin</module>
     </modules>

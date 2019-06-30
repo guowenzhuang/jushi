@@ -9,6 +9,7 @@ import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
+import java.io.Serializable;
 import java.util.Date;
 
 /**
@@ -22,7 +23,8 @@ import java.util.Date;
 @NoArgsConstructor
 @AllArgsConstructor
 @Document(collection = "article")
-public class ArticlePO {
+public class ArticlePO implements Serializable {
+    private static final long serialVersionUID = 4829545493606099519L;
     @Id
     private String id;
     /**

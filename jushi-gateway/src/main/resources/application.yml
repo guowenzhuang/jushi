@@ -12,24 +12,24 @@ spring:
         locator:
           enabled: true
       routes:
+        - id: jushi-web
+          uri: lb://jushi-web
+          predicates:
+            - Path=/api/web/**
+          filters:
+            - StripPrefix=2
+        - id: jushi-admin
+          uri: lb://jushi-admin
+          predicates:
+            - Path=/api/admin/**
+          filters:
+            - StripPrefix=2
         - id: jushi-auth-server
           uri: lb://jushi-auth-server
           predicates:
             - Path=/api/uaa/**
           filters:
             - StripPrefix=2
-        - id: jushi-article
-          uri: lb://jushi-article
-          predicates:
-            - Path=/api/article/** # 如果请求地址满足/to_client/**,则转发到 service-client 服务
-          filters:
-            - StripPrefix=2 # 去除请求地址中的to_client
-        - id: jushi-admin
-          uri: lb://jushi-admin
-          predicates:
-            - Path=/api/admin/** # 如果请求地址满足/to_client/**,则转发到 service-client 服务
-          filters:
-            - StripPrefix=2 # 去除请求地址中的to_client
 
 management:
   endpoints:

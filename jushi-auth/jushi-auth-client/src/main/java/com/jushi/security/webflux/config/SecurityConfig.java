@@ -13,18 +13,14 @@ import org.springframework.security.web.server.SecurityWebFilterChain;
 public class SecurityConfig {
     @Autowired(required = false)
     private AuthorizeConfigManager authorizeConfigManager;
+
     @Bean
     SecurityWebFilterChain webFluxSecurityFilterChain(ServerHttpSecurity http) throws Exception {
-            authorizeConfigManager.config(http.authorizeExchange());
+        authorizeConfigManager.config(http.authorizeExchange());
         return
                 http
-                .csrf().disable()
-                .exceptionHandling()
-                //.authenticationEntryPoint(new HttpBasicServerAuthenticationEntryPoint())
-                .and()
-                .httpBasic()
-                .and()
-                .build();
+                        .csrf().disable()
+                        .build();
     }
 
 

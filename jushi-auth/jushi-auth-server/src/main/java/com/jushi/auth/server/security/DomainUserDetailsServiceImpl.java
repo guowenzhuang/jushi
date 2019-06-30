@@ -33,5 +33,4 @@ public class DomainUserDetailsServiceImpl implements UserDetailsService {
         }).orElseThrow(() -> new UsernameNotFoundException("用户" + lowcaseUsername + "不存在!"));
     }
 
-
 }
