@@ -77,10 +77,10 @@ public class UserHandler extends BaseHandlerAbst<UserRepository, SysUserPO> {
         }).switchIfEmpty(ServerResponse.ok().body(Mono.just(Result.error("注册用户不为null")), Result.class));
     }
 
-    private void userRegisterCheck(SysUserPO sysUserPO) {
+    private void userRegisterCheck(SysUserPO sysUserPo) {
         log.info("用户信息校验");
-        CheckUtil.checkEmpty("用户名", sysUserPO.getUsername());
-        CheckUtil.checkEmpty("密码", sysUserPO.getPassword());
+        CheckUtil.checkEmpty("用户名", sysUserPo.getUsername());
+        CheckUtil.checkEmpty("密码", sysUserPo.getPassword());
     }
 
     public Mono<UserDetails> getCurrentUser() {

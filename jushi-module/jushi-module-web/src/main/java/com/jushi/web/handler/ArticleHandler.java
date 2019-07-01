@@ -47,8 +47,8 @@ public class ArticleHandler extends BaseHandlerAbst<ArticleRepository, ArticlePO
         return pageQuery(Mono.just(articlePageQuery), query -> {
             ArticlePageQueryByPlate articlePageQueryByPlate = (ArticlePageQueryByPlate) query;
             return getQueryByPlate(articlePageQueryByPlate);
-        }, articlePOFlux -> {
-            return ServerResponse.ok().contentType(MediaType.APPLICATION_JSON_UTF8).body(articlePOFlux, ArticlePO.class);
+        }, articlePoFlux -> {
+            return ServerResponse.ok().contentType(MediaType.APPLICATION_JSON_UTF8).body(articlePoFlux, ArticlePO.class);
 
         });
     }

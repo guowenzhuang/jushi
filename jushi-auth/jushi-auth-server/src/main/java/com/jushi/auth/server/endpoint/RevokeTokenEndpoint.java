@@ -17,8 +17,8 @@ public class RevokeTokenEndpoint {
 
     @RequestMapping(method = RequestMethod.DELETE, value = "/oauth/token")
     @ResponseBody
-    public String revokeToken(String access_token) {
-        if (consumerTokenServices.revokeToken(access_token)){
+    public String revokeToken(String accessToken) {
+        if (consumerTokenServices.revokeToken(accessToken)){
             return "注销成功";
         }else{
             return "注销失败";
