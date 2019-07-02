@@ -34,6 +34,7 @@ public class SecurityConfiguration {
                         .and()
                         .csrf().disable()
                         .build();
+
     }
 
 }
