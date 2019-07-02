@@ -9,8 +9,9 @@ import javax.servlet.http.HttpServletResponse;
 
 @Configuration
 @EnableResourceServer
-public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
-
+public class ResourceServerConfig {
+//public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
+/*
     @Override
     public void configure(HttpSecurity http) throws Exception {
 
@@ -23,5 +24,5 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
                 .anyRequest().authenticated()
                 .and()
                 .httpBasic();
-    }
+    }*/
 }

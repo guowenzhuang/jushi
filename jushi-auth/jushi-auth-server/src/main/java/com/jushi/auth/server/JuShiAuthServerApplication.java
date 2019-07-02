@@ -6,14 +6,16 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.context.annotation.Bean;
 import org.springframework.data.domain.AuditorAware;
+import org.springframework.data.mongodb.repository.config.EnableReactiveMongoRepositories;
 
 @EnableDiscoveryClient
 @SpringBootApplication
+@EnableReactiveMongoRepositories
 public class JuShiAuthServerApplication {
-    @Bean(name = "auditorAware")
+   /* @Bean(name = "auditorAware")
     public AuditorAware<String> auditorAware() {
         return ()-> java.util.Optional.ofNullable(SecurityUtils.getCurrentUserUsername());
-    }
+    }*/
     public static void main(String[] args) {
         SpringApplication.run(JuShiAuthServerApplication.class, args);
     }

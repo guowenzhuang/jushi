@@ -8,10 +8,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-@FrameworkEndpoint
+//@FrameworkEndpoint
 public class RevokeTokenEndpoint {
 
-    @Autowired
+  /*  @Autowired
     @Qualifier("consumerTokenServices")
     ConsumerTokenServices consumerTokenServices;
 
@@ -23,5 +23,5 @@ public class RevokeTokenEndpoint {
         }else{
             return "注销失败";
         }
-    }
+    }*/
 }

@@ -13,10 +13,11 @@ import org.springframework.security.oauth2.config.annotation.web.configuration.E
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerEndpointsConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerSecurityConfigurer;
 
-@Configuration
-@EnableAuthorizationServer
-public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdapter {
-    @Autowired
+/*@Configuration
+@EnableAuthorizationServer*/
+public class AuthorizationServerConfig  {
+//public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdapter {
+/*    @Autowired
     private AuthenticationManager authenticationManager;
     @Autowired
     private RedisConnectionFactory connectionFactory;
@@ -58,5 +59,5 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
                 .withClient("webapp")
                 .scopes("web")
                 .authorizedGrantTypes("implicit");
-    }
+    }*/
 }

@@ -15,10 +15,11 @@ import org.springframework.stereotype.Component;
 
 import java.util.*;
 
-@Component
-public class MyRedisTokenStore implements TokenStore {
+/*@Component*/
+public class MyRedisTokenStore {
+//public class MyRedisTokenStore implements TokenStore {
 
-
+/*
     private static final String ACCESS = "access:";
     private static final String AUTH_TO_ACCESS = "auth_to_access:";
     private static final String AUTH = "auth:";
@@ -386,5 +387,5 @@ public class MyRedisTokenStore implements TokenStore {
             accessTokens.add(accessToken);
         }
         return Collections.<OAuth2AccessToken> unmodifiableCollection(accessTokens);
-    }
+    }*/
 }
