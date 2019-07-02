@@ -32,27 +32,28 @@ jushi
 | 
 --jushi-auth                    权限
 |
-----jushi-auth-client         权限客户端 由其他模块集成
+----jushi-auth-client         权限客户端 由其他模块集成
 |
-----jushi-auth-common         权限公共模块  权限公共的依赖
+----jushi-auth-common         权限公共模块  权限公共的依赖
 |
-----jushi-auth-server         权限服务端
+----jushi-auth-server         权限服务端
 |
---jushi-gateway                网关
+--jushi-gateway                网关
 |
---jushi-module                 业务模块
+--jushi-module                 业务模块
 |
 ----jushi-module-admin         后台管理模块
 |
-----jushi-module-api           业务公共模块
+----jushi-module-api           业务公共模块
 |
-----jushi-module-web            前端服务端模块
-    
+----jushi-module-web            前端服务端模块
 ```
 
+## 如何启动
 
+### 1. 安装依赖环境
 
-## 依赖环境
+> 可以在 application.yml 中修改账号密码等配置
 
 - jdk8
 
@@ -62,6 +63,28 @@ jushi
 
 - mongodb4.0.1
 
+### 2.拉取项目
+
+### 3.导入依赖
+
+### 4.启动项目
+
+1. jushi-auth-server
+
+2. jushi-gateway
+
+3. jushi-module-web
+
+4. jushi-module-admin
+
+没有先后顺序
+
+### 5. 启动前端
+
+前端链接: [https://github.com/guowenzhuang/jushi-web-vant](https://github.com/guowenzhuang/jushi-web-vant)
+
+
+
 ## TODO
 
 - 权限服务端改造为webflux模式
@@ -69,5 +92,3 @@ jushi
 - admin 后台基本还未开发
 
 - 搜索未集成es
-
-
