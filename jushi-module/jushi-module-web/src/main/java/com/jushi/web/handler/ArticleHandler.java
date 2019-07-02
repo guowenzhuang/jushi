@@ -2,7 +2,7 @@ package com.jushi.web.handler;
 
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.util.StrUtil;
-import com.jushi.api.handler.BaseHandlerAbst;
+import com.jushi.api.handler.BaseHandler;
 import com.jushi.api.pojo.po.ArticlePO;
 import com.jushi.web.pojo.query.ArticlePageQueryByPlate;
 import com.jushi.web.pojo.query.ArticleSearchQuery;
@@ -25,7 +25,7 @@ import reactor.core.publisher.Mono;
  */
 @Slf4j
 @Component
-public class ArticleHandler extends BaseHandlerAbst<ArticleRepository, ArticlePO> {
+public class ArticleHandler extends BaseHandler<ArticleRepository, ArticlePO> {
     /**
      * mongo模板
      */

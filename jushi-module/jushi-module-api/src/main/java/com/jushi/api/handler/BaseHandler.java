@@ -7,6 +7,7 @@ import com.jushi.api.exception.FieldNameException;
 import com.jushi.api.pojo.Result;
 import com.jushi.api.pojo.query.PageQuery;
 import com.jushi.api.util.CheckUtil;
+import lombok.extern.slf4j.Slf4j;
 import org.reactivestreams.Publisher;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
@@ -33,7 +34,8 @@ import java.util.function.Function;
  * @author 80795
  * @date 2019/6/28 22:31
  */
-public abstract class BaseHandlerAbst<Repository extends ReactiveMongoRepository, Entity> {
+@Slf4j
+public abstract class BaseHandler<Repository extends ReactiveMongoRepository, Entity> {
     @Autowired
     private Repository repository;
     /**
@@ -226,7 +228,11 @@ public abstract class BaseHandlerAbst<Repository extends ReactiveMongoRepository
                         .retry(Duration.ofDays(1000))
                         .data(item);
 
-                if (getId(last).equals(getId(item))) {
+                Object lastId = getId(last);
+                Object itemId = getId(item);
+                log.info("当前值:{}  最终id:{}",item,lastId);
+                //判断是否是最终id
+                if (lastId.equals(itemId)) {
                     return entityBuilder
                             .id(getId(item).toString())
                             .build();
