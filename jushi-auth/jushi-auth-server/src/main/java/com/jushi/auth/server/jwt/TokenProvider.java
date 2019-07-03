@@ -14,15 +14,11 @@ import org.springframework.util.StringUtils;
 
 import javax.annotation.PostConstruct;
 import java.nio.charset.StandardCharsets;
-import java.util.Arrays;
-import java.util.Base64;
-import java.util.Collection;
-import java.util.Date;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
  * @author duc-d
- *
  */
 @Component
 public class TokenProvider {
@@ -73,10 +69,15 @@ public class TokenProvider {
                 .parseClaimsJws(token)
                 .getBody();
 
+        String[] auths = claims.get(AUTHORITIES_KEY).toString().split(",");
+        if (auths == null && auths.length == 0) {
+            auths = new String[]{"anonymous"};
+        }
         Collection<? extends GrantedAuthority> authorities =
-                Arrays.stream(claims.get(AUTHORITIES_KEY).toString().split(","))
+                Arrays.stream(auths)
                         .map(SimpleGrantedAuthority::new)
                         .collect(Collectors.toList());
+
 
         User principal = new User(claims.getSubject(), "", authorities);
 
