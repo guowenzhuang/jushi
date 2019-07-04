@@ -1,4 +1,4 @@
-package com.jushi.auth.server.jwt;
+package com.jushi.security.jwt;
 
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.server.reactive.ServerHttpRequest;

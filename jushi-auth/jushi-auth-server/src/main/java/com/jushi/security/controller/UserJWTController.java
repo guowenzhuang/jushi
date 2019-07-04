@@ -1,9 +1,9 @@
-package com.jushi.auth.server.controller;
+package com.jushi.security.controller;
 
-import com.jushi.auth.server.domain.LoginVM;
-import com.jushi.auth.server.jwt.JWTReactiveAuthenticationManager;
-import com.jushi.auth.server.jwt.JWTToken;
-import com.jushi.auth.server.jwt.TokenProvider;
+import com.jushi.security.domain.LoginVM;
+import com.jushi.security.config.JWTReactiveAuthenticationManager;
+import com.jushi.security.jwt.JWTToken;
+import com.jushi.security.jwt.TokenProvider;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;

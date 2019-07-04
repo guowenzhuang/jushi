@@ -1,7 +1,6 @@
-package com.jushi.auth.server.repository;
+package com.jushi.security.repository;
 
-import com.jushi.auth.server.domain.SysRole;
-import org.springframework.data.mongodb.repository.MongoRepository;
+import com.jushi.security.domain.SysRole;
 import org.springframework.data.mongodb.repository.ReactiveMongoRepository;
 
 /**

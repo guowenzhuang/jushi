@@ -1,7 +1,6 @@
-package com.jushi.auth.server.config;
+package com.jushi.security.jwt;
 
-import com.jushi.auth.server.jwt.TokenProvider;
-import com.jushi.auth.server.security.SecurityUtils;
+import com.jushi.security.util.SecurityUtils;
 import org.springframework.security.core.Authentication;
 import org.springframework.util.StringUtils;
 import org.springframework.web.server.ServerWebExchange;

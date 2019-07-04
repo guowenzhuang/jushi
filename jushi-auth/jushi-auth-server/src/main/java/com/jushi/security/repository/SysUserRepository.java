@@ -1,6 +1,6 @@
-package com.jushi.auth.server.repository;
+package com.jushi.security.repository;
 
-import com.jushi.auth.server.domain.SysUser;
+import com.jushi.security.domain.SysUser;
 import org.springframework.data.mongodb.repository.ReactiveMongoRepository;
 import reactor.core.publisher.Mono;
 

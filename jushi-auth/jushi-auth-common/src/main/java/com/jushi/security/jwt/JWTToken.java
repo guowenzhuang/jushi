@@ -1,12 +1,13 @@
-package com.jushi.auth.server.jwt;
+package com.jushi.security.jwt;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 /**
  * @author duc-d
  */
-@Getter
-@Setter
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor

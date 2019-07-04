@@ -1,4 +1,4 @@
-package com.jushi.auth.server.repository.support;
+package com.jushi.security.repository.support;
 
 import java.io.Serializable;
 

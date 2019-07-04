@@ -1,4 +1,4 @@
-package com.jushi.auth.server.config;
+package com.jushi.security.config;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.AuthenticationException;

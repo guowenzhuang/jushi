@@ -1,7 +1,7 @@
-package com.jushi.auth.server.security;
+package com.jushi.security.security;
 
-import com.jushi.auth.server.domain.SysUser;
-import com.jushi.auth.server.repository.SysUserRepository;
+import com.jushi.security.domain.SysUser;
+import com.jushi.security.repository.SysUserRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.BadCredentialsException;

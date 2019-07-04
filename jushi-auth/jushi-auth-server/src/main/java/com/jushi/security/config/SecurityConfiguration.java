@@ -1,17 +1,17 @@
-package com.jushi.auth.server.config;
+package com.jushi.security.config;
 
-import com.jushi.auth.server.jwt.JWTHeadersExchangeMatcher;
-import com.jushi.auth.server.jwt.JWTReactiveAuthenticationManager;
-import com.jushi.auth.server.jwt.TokenProvider;
-import com.jushi.auth.server.security.AuthoritiesConstants;
-import com.jushi.auth.server.security.ReactiveUserDetailsServiceImpl;
+
+import com.jushi.security.jwt.TokenAuthenticationConverter;
+import com.jushi.security.security.AuthoritiesConstants;
+import com.jushi.security.security.ReactiveUserDetailsServiceImpl;
+import com.jushi.security.jwt.JWTHeadersExchangeMatcher;
+import com.jushi.security.jwt.TokenProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.actuate.autoconfigure.security.reactive.EndpointRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.method.configuration.EnableReactiveMethodSecurity;
-import org.springframework.security.config.annotation.method.configuration.GlobalMethodSecurityConfiguration;
 import org.springframework.security.config.annotation.web.reactive.EnableWebFluxSecurity;
 import org.springframework.security.config.web.server.SecurityWebFiltersOrder;
 import org.springframework.security.config.web.server.ServerHttpSecurity;
@@ -28,7 +28,7 @@ public class SecurityConfiguration {
     @Autowired
     private  ReactiveUserDetailsServiceImpl reactiveUserDetailsService;
     @Autowired
-    private  TokenProvider tokenProvider;
+    private TokenProvider tokenProvider;
 
     private static final String[] AUTH_WHITELIST = {
             "/resources/**",

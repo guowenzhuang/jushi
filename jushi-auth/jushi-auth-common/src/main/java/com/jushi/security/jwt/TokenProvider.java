@@ -1,4 +1,4 @@
-package com.jushi.auth.server.jwt;
+package com.jushi.security.jwt;
 
 import io.jsonwebtoken.*;
 import org.slf4j.Logger;
@@ -14,7 +14,10 @@ import org.springframework.util.StringUtils;
 
 import javax.annotation.PostConstruct;
 import java.nio.charset.StandardCharsets;
-import java.util.*;
+import java.util.Arrays;
+import java.util.Base64;
+import java.util.Collection;
+import java.util.Date;
 import java.util.stream.Collectors;
 
 /**
@@ -68,11 +71,13 @@ public class TokenProvider {
                 .setSigningKey(secretKey)
                 .parseClaimsJws(token)
                 .getBody();
-
-        String[] auths = claims.get(AUTHORITIES_KEY).toString().split(",");
-        if (auths == null && auths.length == 0) {
-            auths = new String[]{"anonymous"};
+        Object authClaims = claims.get(AUTHORITIES_KEY);
+        //FIXME 如果没有角色默认为普通用户 需要用户注册时默认指定角色
+        if(StringUtils.isEmpty(authClaims)){
+            authClaims="generalUser";
         }
+        String[] auths = authClaims.toString().split(",");
+
         Collection<? extends GrantedAuthority> authorities =
                 Arrays.stream(auths)
                         .map(SimpleGrantedAuthority::new)

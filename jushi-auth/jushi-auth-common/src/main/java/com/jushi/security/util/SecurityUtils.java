@@ -1,4 +1,4 @@
-package com.jushi.auth.server.security;
+package com.jushi.security.util;
 
 import org.apache.logging.log4j.util.Strings;
 import org.springframework.http.HttpHeaders;

@@ -1,4 +1,4 @@
-package com.jushi.auth.server.domain;
+package com.jushi.security.domain;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

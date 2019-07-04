@@ -1,4 +1,4 @@
-package com.jushi.auth.server.controller;
+package com.jushi.security.controller;
 
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.ReactiveSecurityContextHolder;

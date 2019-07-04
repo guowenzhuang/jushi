@@ -23,14 +23,5 @@ public class JushiWebAuthorizeConfigManager implements AuthorizeConfigManager {
         }
         config.anyExchange().authenticated();
     }
-   /* @Override
-    public void config(ExpressionUrlAuthorizationConfigurer<HttpSecurity>.ExpressionInterceptUrlRegistry config) {
-        if(authorizeConfigProviders==null){
-            return;
-        }
-        for (AuthorizeConfigProvider authorizeConfigProvider:authorizeConfigProviders) {
-            authorizeConfigProvider.config(config);
-        }
-        config.anyRequest().authenticated();
-    }*/
+
 }

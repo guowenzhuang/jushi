@@ -1,4 +1,4 @@
-package com.jushi.auth.server.security;
+package com.jushi.security.security;
 
 /**
  * Constants for Spring Security authorities.

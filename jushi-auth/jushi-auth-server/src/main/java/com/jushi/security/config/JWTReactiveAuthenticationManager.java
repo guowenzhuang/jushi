@@ -1,4 +1,4 @@
-package com.jushi.auth.server.jwt;
+package com.jushi.security.config;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,7 +14,7 @@ import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
 
 /**
- * @author duc-d
+ * @author 80795
  */
 public class JWTReactiveAuthenticationManager implements ReactiveAuthenticationManager {
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
