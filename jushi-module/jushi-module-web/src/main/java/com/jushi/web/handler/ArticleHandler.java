@@ -4,6 +4,8 @@ import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.util.StrUtil;
 import com.jushi.api.handler.BaseHandler;
 import com.jushi.api.pojo.po.ArticlePO;
+import com.jushi.api.pojo.po.PlatePO;
+import com.jushi.api.util.CheckUtil;
 import com.jushi.web.pojo.query.ArticlePageQueryByPlate;
 import com.jushi.web.pojo.query.ArticleSearchQuery;
 import com.jushi.web.repository.ArticleRepository;
@@ -138,4 +140,45 @@ public class ArticleHandler extends BaseHandler<ArticleRepository, ArticlePO> {
         query.addCriteria(criteria);
         return query;
     }
+    /**
+     * 根据文章id 查文章
+     */
+
+    public Mono<ServerResponse> FindarticleById(ServerRequest request) {
+        String id = request.pathVariable("id");
+        return ServerResponse.ok()
+                .body(articleRepository.findById(id), ArticlePO.class);
+    }
+    /**
+     * 用户发帖校验
+     */
+    public void checkArtcle(ArticlePO articlePO) {
+
+
+        CheckUtil.checkEmpty("板块id",articlePO.getPlate());
+        CheckUtil.checkEmpty("标题",articlePO.getTitle());
+
+    }
+    /**
+     * 用户发帖
+     */
+    public Mono<ServerResponse> UserPosting(ServerRequest request) {
+
+            Mono<ArticlePO> ArticlePOMono = request.bodyToMono(ArticlePO.class);
+            return ArticlePOMono.flatMap(u -> {
+            checkArtcle(u);
+            u.setIsPublic(true);
+            u.setScanCount(0L);
+            u.setLikeCount(0L);
+            u.setCommentCount(0L);
+            u.setWeight(0L);
+            Mono<ArticlePO> savaArtice = articleRepository.save(u);
+            return savaArtice.flatMap(saUser -> {
+                return ServerResponse.ok().contentType(MediaType.APPLICATION_JSON_UTF8)
+                        .body(Mono.just(saUser)
+                                , ArticlePO.class);
+            });
+        });
+    }
+
 }
