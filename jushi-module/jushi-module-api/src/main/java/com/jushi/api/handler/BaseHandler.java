@@ -222,7 +222,7 @@ public abstract class BaseHandler<Repository extends ReactiveMongoRepository, En
      */
     protected Mono<ServerResponse> sseReturn(Flux<Entity> entityFlux) {
         Mono<Entity> lastMono = entityFlux.last();
-        Flux<ServerSentEvent> serverSentEventFlux = entityFlux.flatMap(item -> {
+        Flux<ServerSentEvent> serverSentEventFlux = entityFlux.concatMap(item -> {
             return lastMono.map(last -> {
                 ServerSentEvent.Builder<Entity> entityBuilder = ServerSentEvent.<Entity>builder()
                         .retry(Duration.ofDays(1000))

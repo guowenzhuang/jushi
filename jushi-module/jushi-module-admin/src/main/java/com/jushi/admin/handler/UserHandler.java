@@ -12,6 +12,7 @@ import org.springframework.data.domain.Example;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.ReactiveSecurityContextHolder;
 import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.server.ServerRequest;
@@ -31,10 +32,12 @@ public class UserHandler extends BaseHandler<UserRepository, SysUserPO> {
 
 
     public Mono<ServerResponse> getCurrentUser(ServerRequest request) {
-        Mono<Object> currentUser = getCurrentUser();
+        Mono<UserDetails> currentUser = getCurrentUser();
         return currentUser.flatMap(item -> {
-            System.out.println(item);
-            return ServerResponse.ok().body(Mono.just(item),Object.class);
+            String username = item.getUsername();
+            Example<SysUserPO> exampleUser=Example.of(SysUserPO.builder().username(username).build());
+            Mono<SysUserPO> user = userRepository.findOne(exampleUser);
+            return ServerResponse.ok().body(user,SysUserPO.class);
         });
     }
 
@@ -82,11 +85,13 @@ public class UserHandler extends BaseHandler<UserRepository, SysUserPO> {
         CheckUtil.checkEmpty("密码", sysUserPo.getPassword());
     }
 
-    public Mono<Object> getCurrentUser() {
-        return ReactiveSecurityContextHolder.getContext()
+    public Mono<UserDetails> getCurrentUser() {
+        Mono<UserDetails> user = ReactiveSecurityContextHolder.getContext()
                 .switchIfEmpty(Mono.error(new IllegalStateException("ReactiveSecurityContext is empty")))
                 .map(SecurityContext::getAuthentication)
-                .map(Authentication::getPrincipal);
+                .map(Authentication::getPrincipal)
+                .map(item -> (UserDetails)item);
+        return user;
     }
 
 

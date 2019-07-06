@@ -1,5 +1,6 @@
 package com.jushi.api.pojo.po;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -43,6 +44,7 @@ public class SysUserPO implements Serializable {
     private String imageUrl;
     @Field("last_name")
     private String lastName;
+    @JsonIgnore
     private String password;
     private String username;
     @DBRef

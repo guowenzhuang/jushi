@@ -36,15 +36,6 @@ management:
     web:
       exposure:
         include: '*'
-security:
-  oauth2:
-    client:
-      access-token-uri: http://localhost:8001/api/uaa/oauth/token
-      user-authorization-uri: http://localhost:8001/api/uaa/oauth/authorize
-      client-id: webapp
-    resource:
-      user-info-uri: http://localhost:8001/api/uaa/user
-      prefer-token-info: false
 #debug
 #logging:
 #  level:

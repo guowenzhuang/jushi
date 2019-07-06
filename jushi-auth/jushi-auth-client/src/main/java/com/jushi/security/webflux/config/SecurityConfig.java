@@ -24,12 +24,16 @@ public class SecurityConfig {
 
     @Bean
     SecurityWebFilterChain webFluxSecurityFilterChain(ServerHttpSecurity http) throws Exception {
-        authorizeConfigManager.config(http.authorizeExchange());
-        return
-                http
-                        .addFilterAt(webFilter(), SecurityWebFiltersOrder.AUTHORIZATION)
-                        .csrf().disable()
-                        .build();
+
+        ServerHttpSecurity serverHttpSecurity = http
+                .addFilterAt(webFilter(), SecurityWebFiltersOrder.AUTHORIZATION);
+
+        authorizeConfigManager.config(serverHttpSecurity.authorizeExchange());
+
+        return serverHttpSecurity.csrf().disable()
+                .build();
+
+
     }
 
 
