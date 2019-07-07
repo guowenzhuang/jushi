@@ -162,7 +162,7 @@ public class ArticleHandler extends BaseHandler<ArticleRepository, ArticlePO> {
     /**
      * 用户发帖
      */
-    public Mono<ServerResponse> UserPosting(ServerRequest request) {
+    public Mono<ServerResponse> userPosting(ServerRequest request) {
 
             Mono<ArticlePO> ArticlePOMono = request.bodyToMono(ArticlePO.class);
             return ArticlePOMono.flatMap(u -> {
