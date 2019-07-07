@@ -1,10 +1,9 @@
-package com.jushi.api.pojo.dto;
+package com.jushi.web.pojo.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.io.Serializable;
 
@@ -17,7 +16,11 @@ public class IssueArticleDTO implements Serializable {
     /**
      * 板块id
      */
-   private String plateid;
+   private String plateId;
+    /**
+     * 用户id
+     */
+   private String userId;
       /**
      * 文章标题
      */

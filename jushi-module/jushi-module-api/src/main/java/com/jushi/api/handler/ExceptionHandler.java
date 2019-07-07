@@ -32,7 +32,8 @@ public class ExceptionHandler implements WebExceptionHandler {
     public Mono<Void> handle(ServerWebExchange exchange, Throwable ex) {
         ServerHttpResponse response = exchange.getResponse();
         //设置响应头 400
-        response.setStatusCode(HttpStatus.BAD_REQUEST);
+        //FIXME 应该设置错误响应码
+        response.setStatusCode(HttpStatus.OK);
         //设置返回类型
         response.getHeaders().setContentType(MediaType.APPLICATION_JSON_UTF8);
         String errorMsg = toStr(ex);
