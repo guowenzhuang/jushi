@@ -7,12 +7,17 @@ import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 
+/**
+ * 发表文章
+ * @author mm
+ */
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 public class IssueArticleDTO implements Serializable {
 
+    private static final long serialVersionUID = 2660715058723014033L;
     /**
      * 板块id
      */

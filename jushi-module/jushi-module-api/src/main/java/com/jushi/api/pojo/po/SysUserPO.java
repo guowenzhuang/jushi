@@ -49,5 +49,9 @@ public class SysUserPO implements Serializable {
     private String username;
     @DBRef
     private List<ArticlePO> articles;
+    /**
+     * 用户所有评论
+     */
+    private List<CommentPO> comments;
 
 }

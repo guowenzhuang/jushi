@@ -5,8 +5,11 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
-import org.springframework.data.mongodb.core.mapping.Field;
+
+import java.io.Serializable;
+import java.util.List;
 
 /**
  * 评论
@@ -19,41 +22,40 @@ import org.springframework.data.mongodb.core.mapping.Field;
 @NoArgsConstructor
 @AllArgsConstructor
 @Document(collection = "comment")
-public class CommentPO {
+public class CommentPO implements Serializable {
+    private static final long serialVersionUID = -4247971141632607641L;
     /**
      * 评论id
      */
     @Id
     private String id;
     /**
-     * 文章id
+     * 评论文章
      */
-    @Field("article_id")
-    private String articleId;
+    @DBRef
+    private PlatePO article;
     /**
-     * 板块id
+     * 评论人
      */
-    private String pid;
+    @DBRef
+    private SysUserPO sysUser;
     /**
      * 评论内容
      */
     private String content;
     /**
-     *评论用户id
+     * 父级评论
      */
-    @Field("from_uid")
-    private String fromUid;
+    @DBRef
+    private CommentPO parent;
     /**
-     *评论目标用户id
+     * 子级评论
      */
-    @Field("to_uid")
-    private String toUid;
+    @DBRef
+    private List<CommentPO> children;
     /**
-     * 父级评论id
+     * 祖先评论 (最父级评论)
      */
-    private String parentid;
-    /**
-     * 子级评论id
-     */
-    private String childrenid;
+    @DBRef
+    private CommentPO ancestor;
 }
