@@ -1,5 +1,7 @@
 package com.jushi.admin.handler;
 
+import cn.hutool.core.util.StrUtil;
+import com.jushi.admin.pojo.dto.ChangePassDTO;
 import com.jushi.admin.pojo.dto.RegisterUserDTO;
 import com.jushi.admin.repository.UserRepository;
 import com.jushi.api.exception.CheckException;
@@ -34,6 +36,7 @@ public class UserHandler extends BaseHandler<UserRepository, SysUserPO> {
 
     /**
      * 获取当前用户
+     *
      * @param request
      * @return
      */
@@ -76,7 +79,7 @@ public class UserHandler extends BaseHandler<UserRepository, SysUserPO> {
                 }
                 //RegisterUserDTO 转换成 sysUserPO
                 SysUserPO sysUserPO = new SysUserPO();
-                BeanUtils.copyProperties(u,sysUserPO);
+                BeanUtils.copyProperties(u, sysUserPO);
                 //加密信息
                 sysUserPO.setPassword(encoder.encode(sysUserPO.getPassword()))
                         .setCreatedBy(sysUserPO.getUsername())
@@ -108,6 +111,55 @@ public class UserHandler extends BaseHandler<UserRepository, SysUserPO> {
                 .map(item -> (UserDetails) item);
         return user;
     }
+    /**
+     * 修改密码
+     * @param request
+     * @return
+     */
+
+    public Mono<ServerResponse> changePassword(ServerRequest request) {
+        Mono<ChangePassDTO> change = request.bodyToMono(ChangePassDTO.class);
+        return change.flatMap(check -> {
+
+            SysUserPO sysUserPO = new SysUserPO();
+            BeanUtils.copyProperties(change, sysUserPO);
+            //获取密码
+            SysUserPO pass = SysUserPO.builder().password(check.getPassword()).build();
+            //获取用户id
+            sysUserPO.setId(check.getId());
+            //判断旧密码是否等于原密码
+            if(!(sysUserPO.getPassword().equals(pass))){
+                throw new CheckException("用户", "请检查旧密码是否正确");
+
+            }
+            //加密信息
+            sysUserPO.setPassword(encoder.encode(sysUserPO.getPassword()))
+                    .setCreatedBy(sysUserPO.getUsername())
+                    .setCreatedDate(new Date());
+              Mono<SysUserPO> saveUser = userRepository.save(sysUserPO);
+              return saveUser.flatMap(sa -> {
+                return ServerResponse.ok()
+                        .body(Mono.just(Result.success("修改成功",sa))
+                                , Result.class);
+            });
+        })
+                .switchIfEmpty(ServerResponse.ok().body(Mono.just(Result.error(StrUtil.format("{} 参数不能为null", RegisterUserDTO.class.getName()))), Result.class));
+    }
+
+
+
+
+
+
+
+
+
+
 
 
 }
+
+
+
+
+
