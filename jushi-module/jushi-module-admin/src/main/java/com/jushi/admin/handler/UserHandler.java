@@ -123,12 +123,13 @@ public class UserHandler extends BaseHandler<UserRepository, SysUserPO> {
 
             SysUserPO sysUserPO = new SysUserPO();
             BeanUtils.copyProperties(change, sysUserPO);
-            //获取密码
-            SysUserPO pass = SysUserPO.builder().password(check.getPassword()).build();
-            //获取用户id
-            sysUserPO.setId(check.getId());
+            //获取原密码
+            SysUserPO oldpass = SysUserPO.builder().password(check.getOldPassword()).build();
+            SysUserPO newpass = SysUserPO.builder().password(check.getNewPassword()).build();
+            //获取当前用户
+            getCurrentUser();
             //判断旧密码是否等于原密码
-            if(!(sysUserPO.getPassword().equals(pass))){
+            if(!(oldpass.equals(newpass))){
                 throw new CheckException("用户", "请检查旧密码是否正确");
 
             }
