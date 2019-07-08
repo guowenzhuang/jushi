@@ -1,23 +1,31 @@
-package com.jushi.api.pojo.dto;
+package com.jushi.web.pojo.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.io.Serializable;
 
+/**
+ * 发表文章
+ * @author mm
+ */
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 public class IssueArticleDTO implements Serializable {
 
+    private static final long serialVersionUID = 2660715058723014033L;
     /**
      * 板块id
      */
-   private String plateid;
+   private String plateId;
+    /**
+     * 用户id
+     */
+   private String userId;
       /**
      * 文章标题
      */

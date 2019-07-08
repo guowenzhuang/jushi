@@ -1,11 +1,11 @@
 package com.jushi.security.config;
 
 
+import com.jushi.security.jwt.JWTHeadersExchangeMatcher;
 import com.jushi.security.jwt.TokenAuthenticationConverter;
+import com.jushi.security.jwt.TokenProvider;
 import com.jushi.security.security.AuthoritiesConstants;
 import com.jushi.security.security.ReactiveUserDetailsServiceImpl;
-import com.jushi.security.jwt.JWTHeadersExchangeMatcher;
-import com.jushi.security.jwt.TokenProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.actuate.autoconfigure.security.reactive.EndpointRequest;
 import org.springframework.context.annotation.Bean;
@@ -62,7 +62,7 @@ public class SecurityConfiguration {
                 .matchers(EndpointRequest.toAnyEndpoint())
                 .hasAuthority(AuthoritiesConstants.ADMIN)
                 .and()
-                .addFilterAt(webFilter(), SecurityWebFiltersOrder.AUTHORIZATION)
+                .addFilterAt(webFilter(), SecurityWebFiltersOrder.LAST)
                 .authorizeExchange()
                 .pathMatchers(AUTH_WHITELIST).permitAll()
                 .anyExchange().authenticated();
@@ -89,5 +89,6 @@ public class SecurityConfiguration {
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
+
 
 }

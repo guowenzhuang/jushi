@@ -1,5 +1,6 @@
 package com.jushi.admin.handler;
 
+import com.jushi.admin.pojo.dto.RegisterUserDTO;
 import com.jushi.admin.repository.UserRepository;
 import com.jushi.api.exception.CheckException;
 import com.jushi.api.handler.BaseHandler;
@@ -7,11 +8,13 @@ import com.jushi.api.pojo.Result;
 import com.jushi.api.pojo.po.SysUserPO;
 import com.jushi.api.util.CheckUtil;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.ReactiveSecurityContextHolder;
 import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.server.ServerRequest;
@@ -29,12 +32,23 @@ public class UserHandler extends BaseHandler<UserRepository, SysUserPO> {
     @Autowired
     private UserRepository userRepository;
 
-
+    /**
+     * 获取当前用户
+     * @param request
+     * @return
+     */
     public Mono<ServerResponse> getCurrentUser(ServerRequest request) {
-        Mono<Object> currentUser = getCurrentUser();
+        Mono<UserDetails> currentUser = getCurrentUser();
         return currentUser.flatMap(item -> {
-            System.out.println(item);
-            return ServerResponse.ok().body(Mono.just(item),Object.class);
+            String username = item.getUsername();
+            Example<SysUserPO> exampleUser = Example.of(SysUserPO.builder().username(username).build());
+            Mono<SysUserPO> user = userRepository.findOne(exampleUser);
+            return user.flatMap(u -> {
+                //FIXME 返回的时候不需要密码 需要改为实体类DTO返回
+                u.setPassword("");
+                return ServerResponse.ok().body(Mono.just(u), SysUserPO.class);
+            });
+
         });
     }
 
@@ -45,7 +59,7 @@ public class UserHandler extends BaseHandler<UserRepository, SysUserPO> {
      * @return
      */
     public Mono<ServerResponse> userRegister(ServerRequest request) {
-        Mono<SysUserPO> userMono = request.bodyToMono(SysUserPO.class);
+        Mono<RegisterUserDTO> userMono = request.bodyToMono(RegisterUserDTO.class);
         return userMono.flatMap(u -> {
             //检查必填字段
             userRegisterCheck(u);
@@ -60,33 +74,39 @@ public class UserHandler extends BaseHandler<UserRepository, SysUserPO> {
                 if (is) {
                     throw new CheckException("用户", sysUserName.getUsername(), "此用户已存在");
                 }
+                //RegisterUserDTO 转换成 sysUserPO
+                SysUserPO sysUserPO = new SysUserPO();
+                BeanUtils.copyProperties(u,sysUserPO);
                 //加密信息
-                u.setPassword(encoder.encode(u.getPassword()))
-                        .setCreatedBy(u.getUsername())
+                sysUserPO.setPassword(encoder.encode(sysUserPO.getPassword()))
+                        .setCreatedBy(sysUserPO.getUsername())
                         .setCreatedDate(new Date());
                 //保存用户
-                Mono<SysUserPO> saveUser = userRepository.save(u);
+                Mono<SysUserPO> saveUser = userRepository.save(sysUserPO);
                 return saveUser.flatMap(saUser -> {
                     return ServerResponse.ok()
-                            .body(Mono.just(saUser)
-                                    , SysUserPO.class);
+                            .body(Mono.just(Result.success("注册成功", saUser))
+                                    , Result.class);
                 });
 
             });
         }).switchIfEmpty(ServerResponse.ok().body(Mono.just(Result.error("注册用户不为null")), Result.class));
     }
 
-    private void userRegisterCheck(SysUserPO sysUserPo) {
+    private void userRegisterCheck(RegisterUserDTO registerUserDTO) {
+        //FIXME 检验不通过 应该返回 错误 不应该走全局异常处理 否则会造成提示信息不明确
         log.info("用户信息校验");
-        CheckUtil.checkEmpty("用户名", sysUserPo.getUsername());
-        CheckUtil.checkEmpty("密码", sysUserPo.getPassword());
+        CheckUtil.checkEmpty("用户名", registerUserDTO.getUsername());
+        CheckUtil.checkEmpty("密码", registerUserDTO.getPassword());
     }
 
-    public Mono<Object> getCurrentUser() {
-        return ReactiveSecurityContextHolder.getContext()
+    public Mono<UserDetails> getCurrentUser() {
+        Mono<UserDetails> user = ReactiveSecurityContextHolder.getContext()
                 .switchIfEmpty(Mono.error(new IllegalStateException("ReactiveSecurityContext is empty")))
                 .map(SecurityContext::getAuthentication)
-                .map(Authentication::getPrincipal);
+                .map(Authentication::getPrincipal)
+                .map(item -> (UserDetails) item);
+        return user;
     }
 
 
