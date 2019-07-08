@@ -1,7 +1,7 @@
 package com.jushi.web.handler;
 
 
-import com.jushi.api.handler.BaseHandlerAbst;
+import com.jushi.api.handler.BaseHandler;
 import com.jushi.api.pojo.po.PlatePO;
 import com.jushi.web.repository.PlateRepository;
 import lombok.extern.slf4j.Slf4j;
@@ -19,7 +19,7 @@ import reactor.core.publisher.Mono;
  */
 @Slf4j
 @Component
-public class PlateHandler extends BaseHandlerAbst<PlateRepository, PlatePO> {
+public class PlateHandler extends BaseHandler<PlateRepository, PlatePO> {
     /**
      * 板块Repository
      */

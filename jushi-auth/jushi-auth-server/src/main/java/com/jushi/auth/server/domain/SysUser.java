@@ -5,7 +5,6 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.BatchSize;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -13,7 +12,9 @@ import org.springframework.data.mongodb.core.mapping.Field;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Data
@@ -45,15 +46,14 @@ public class SysUser extends AbstractAuditingEntity{
 
     @JsonIgnore
     @DBRef
-    @BatchSize(size = 20)
     private Set<SysRole> roles = new HashSet<>();
 
 
     private Set<GrantedAuthority> authorities = new HashSet<>();
 
 
-    public Set<GrantedAuthority> getAuthorities() {
-        Set<GrantedAuthority> userAuthotities = new HashSet<>();
+    public List<GrantedAuthority> getAuthorities() {
+        List<GrantedAuthority> userAuthotities = new ArrayList<>();
         for(SysRole role : this.roles){
             for(SysAuthority authority : role.getAuthorities()){
                 userAuthotities.add(new SimpleGrantedAuthority(authority.getValue()));

@@ -2,7 +2,7 @@ package com.jushi.admin.handler;
 
 import com.jushi.admin.repository.UserRepository;
 import com.jushi.api.exception.CheckException;
-import com.jushi.api.handler.BaseHandlerAbst;
+import com.jushi.api.handler.BaseHandler;
 import com.jushi.api.pojo.Result;
 import com.jushi.api.pojo.po.SysUserPO;
 import com.jushi.api.util.CheckUtil;
@@ -23,7 +23,7 @@ import java.util.Date;
 
 @Slf4j
 @Component
-public class UserHandler extends BaseHandlerAbst<UserRepository, SysUserPO> {
+public class UserHandler extends BaseHandler<UserRepository, SysUserPO> {
 
     @Autowired
     private PasswordEncoder encoder;
@@ -77,10 +77,10 @@ public class UserHandler extends BaseHandlerAbst<UserRepository, SysUserPO> {
         }).switchIfEmpty(ServerResponse.ok().body(Mono.just(Result.error("注册用户不为null")), Result.class));
     }
 
-    private void userRegisterCheck(SysUserPO sysUserPO) {
+    private void userRegisterCheck(SysUserPO sysUserPo) {
         log.info("用户信息校验");
-        CheckUtil.checkEmpty("用户名", sysUserPO.getUsername());
-        CheckUtil.checkEmpty("密码", sysUserPO.getPassword());
+        CheckUtil.checkEmpty("用户名", sysUserPo.getUsername());
+        CheckUtil.checkEmpty("密码", sysUserPo.getPassword());
     }
 
     public Mono<UserDetails> getCurrentUser() {

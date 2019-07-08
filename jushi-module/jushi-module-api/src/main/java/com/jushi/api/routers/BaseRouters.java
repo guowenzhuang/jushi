@@ -1,6 +1,6 @@
 package com.jushi.api.routers;
 
-import com.jushi.api.handler.BaseHandlerAbst;
+import com.jushi.api.handler.BaseHandler;
 import org.springframework.http.MediaType;
 import org.springframework.web.reactive.function.server.RequestPredicates;
 import org.springframework.web.reactive.function.server.RouterFunction;
@@ -11,7 +11,7 @@ import org.springframework.web.reactive.function.server.ServerResponse;
  * @author 80795
  * @date 2019/6/28 23:51
  */
-public abstract class BaseRouters<T extends BaseHandlerAbst> {
+public abstract class BaseRouters<T extends BaseHandler> {
 
     protected RouterFunction<ServerResponse> baseRoute(T baseHandler) {
         RouterFunction<ServerResponse> route = RouterFunctions.route(
