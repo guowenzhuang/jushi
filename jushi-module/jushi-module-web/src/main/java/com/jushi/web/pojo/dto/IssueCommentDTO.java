@@ -37,5 +37,5 @@ public class IssueCommentDTO implements Serializable {
     /**
      * 祖先评论id
      */
-    private String ancestor;
+    private String ancestorId;
 }

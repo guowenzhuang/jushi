@@ -33,7 +33,7 @@ public class CommentPO implements Serializable {
      * 评论文章
      */
     @DBRef
-    private PlatePO article;
+    private ArticlePO article;
     /**
      * 评论人
      */

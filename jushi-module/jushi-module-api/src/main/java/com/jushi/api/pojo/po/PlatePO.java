@@ -53,8 +53,5 @@ public class PlatePO implements Serializable {
      * 帖子列表
      */
     private List<ArticlePO> articles;
-    /**
-     * 文章所有评论
-     */
-    private List<CommentPO> comments;
+
 }

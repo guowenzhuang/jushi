@@ -17,7 +17,7 @@ import org.springframework.web.reactive.function.server.ServerResponse;
 @Configuration
 public class ArticleRouters extends BaseRouters<ArticleHandler> {
     @Bean
-    public RouterFunction<ServerResponse> serverResponseRouterFunction(ArticleHandler articleHandler) {
+    public RouterFunction<ServerResponse> articleRouter(ArticleHandler articleHandler) {
         RouterFunction<ServerResponse> route = RouterFunctions.route(
                 RequestPredicates.GET("/queryPageByPlate"),
                 articleHandler::articleQueryPageByPlate)

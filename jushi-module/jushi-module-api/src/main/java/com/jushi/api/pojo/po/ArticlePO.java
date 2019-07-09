@@ -11,6 +11,7 @@ import org.springframework.data.mongodb.core.mapping.Field;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 /**
  * 文章
@@ -103,4 +104,8 @@ public class ArticlePO implements Serializable {
      * 权重(默认按权重排序)
      */
     private Long weight;
+    /**
+     * 文章所有评论
+     */
+    private List<CommentPO> comments;
 }
