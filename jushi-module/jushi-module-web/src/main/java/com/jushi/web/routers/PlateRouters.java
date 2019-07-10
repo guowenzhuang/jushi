@@ -16,7 +16,7 @@ import org.springframework.web.reactive.function.server.ServerResponse;
 @Configuration
 public class PlateRouters extends BaseRouters<PlateHandler> {
     @Bean
-    public RouterFunction<ServerResponse> plateHandle(PlateHandler plateHandler) {
+    public RouterFunction<ServerResponse> plateRouter(PlateHandler plateHandler) {
         RouterFunction<ServerResponse> route = RouterFunctions.route(
                 RequestPredicates.GET("/querySort"),
                 plateHandler::querySort)

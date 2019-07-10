@@ -10,6 +10,8 @@ public class GateWayAuthorizeConfigProvider implements AuthorizeConfigProvider {
 
     @Override
     public void config(ServerHttpSecurity.AuthorizeExchangeSpec config) {
+        //http://localhost:8025/api/web/plate/querySort/SSE
+        //http://localhost:8025/api/web/article/page/SSE?page=0&size=9&order=weight
         config
                 .pathMatchers(
                         "/api/uaa/**",

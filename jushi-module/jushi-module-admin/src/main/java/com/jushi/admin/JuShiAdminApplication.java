@@ -13,7 +13,7 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 @SpringBootApplication
 @EnableReactiveMongoRepositories
 @EnableGlobalMethodSecurity(prePostEnabled = true)
-@ComponentScan(basePackages = {"com.jushi.security.webflux", "com.jushi.admin", "com.jushi.api"})
+@ComponentScan(basePackages = {"com.jushi.security", "com.jushi.admin", "com.jushi.api"})
 public class JuShiAdminApplication {
 
     public static void main(String[] args) {

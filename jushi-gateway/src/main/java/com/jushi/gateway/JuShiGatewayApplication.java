@@ -7,7 +7,7 @@ import org.springframework.context.annotation.ComponentScan;
 
 @EnableDiscoveryClient
 @SpringBootApplication
-@ComponentScan(basePackages = {"com.jushi.security.webflux","com.jushi.gateway"})
+@ComponentScan(basePackages = {"com.jushi.security","com.jushi.gateway"})
 public class JuShiGatewayApplication {
 
     public static void main(String[] args) {

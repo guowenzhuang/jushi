@@ -53,4 +53,5 @@ public class PlatePO implements Serializable {
      * 帖子列表
      */
     private List<ArticlePO> articles;
+
 }
