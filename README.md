@@ -66,11 +66,13 @@ jushi
 
 - mongodb4.0.1
 
-### 2.拉取项目
+### 2.导入sql脚本(在主目录下的sql目录内)
 
-### 3.导入依赖
+### 3.拉取项目
 
-### 4.启动项目
+### 4.导入依赖
+
+### 5.启动项目
 
 1. jushi-auth-server
 
@@ -82,7 +84,7 @@ jushi
 
 没有先后顺序
 
-### 5. 启动前端
+### 6. 启动前端
 
 前端链接: [https://github.com/guowenzhuang/jushi-web-vant](https://github.com/guowenzhuang/jushi-web-vant)
 
