@@ -18,7 +18,12 @@ public class CommentRouters extends BaseRouters<CommentHandler> {
                 RequestPredicates.POST("/issueComment")
                         .and(RequestPredicates.accept(MediaType.APPLICATION_JSON_UTF8)),
                 commentHandler::issueComment
-
+        ).andRoute(
+                RequestPredicates.GET("/queryPageArticle"),
+                commentHandler::commonQueryPageByArticle
+        ).andRoute(
+                RequestPredicates.GET("/queryPageArticle/SSE"),
+                commentHandler::commonQueryPageByArticleSSE
         );
         return RouterFunctions.nest(
                 //相当于类上面的@RequestMapping

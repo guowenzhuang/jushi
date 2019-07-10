@@ -7,8 +7,10 @@ import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.Field;
 
 import java.io.Serializable;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -43,6 +45,21 @@ public class CommentPO implements Serializable {
      * 评论内容
      */
     private String content;
+    /**
+     * 评论时间
+     */
+    @Field("create_time")
+    private Date createTime;
+    /**
+     * 点赞数
+     */
+    @Field("like_count")
+    private Long likeCount;
+    /**
+     * 评论数
+     */
+    @Field("comment_count")
+    private Long commentCount;
     /**
      * 父级评论
      */
