@@ -15,7 +15,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class CommonPageQueryByArticle extends PageQuery {
+public class CommentPageQueryByArticle extends PageQuery {
     /**
      * 文章id
      */

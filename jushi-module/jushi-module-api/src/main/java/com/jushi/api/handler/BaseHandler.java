@@ -217,14 +217,11 @@ public abstract class BaseHandler<Repository extends ReactiveMongoRepository, En
 
     }
 
-    /**
-     * sse返回封装
-     */
-    protected Mono<ServerResponse> sseReturn(Flux<Entity> entityFlux) {
-        Mono<Entity> lastMono = entityFlux.last();
+    protected <T> Mono<ServerResponse> sseReturn(Flux<T> entityFlux,Class<T> clazz){
+        Mono<T> lastMono = entityFlux.last();
         Flux<ServerSentEvent> serverSentEventFlux = entityFlux.concatMap(item -> {
             return lastMono.map(last -> {
-                ServerSentEvent.Builder<Entity> entityBuilder = ServerSentEvent.<Entity>builder()
+                ServerSentEvent.Builder<Object> entityBuilder = ServerSentEvent.<Object>builder()
                         .retry(Duration.ofDays(1000))
                         .data(item);
 
@@ -243,6 +240,12 @@ public abstract class BaseHandler<Repository extends ReactiveMongoRepository, En
         });
 
         return sSEReponseBuild(serverSentEventFlux, ServerSentEvent.class);
+    }
+    /**
+     * sse返回封装
+     */
+    protected Mono<ServerResponse> sseReturn(Flux<Entity> entityFlux) {
+        return sseReturn(entityFlux,entityClass);
     }
 
     protected <T, P extends Publisher<T>> Mono<ServerResponse> sSEReponseBuild(P publisher, Class<T> elementClass) {
@@ -292,7 +295,7 @@ public abstract class BaseHandler<Repository extends ReactiveMongoRepository, En
      *
      * @param pageQuery
      */
-    private void checkPage(PageQuery pageQuery) {
+    protected void checkPage(PageQuery pageQuery) {
         CheckUtil.checkEmpty("页数", pageQuery.getPage());
         CheckUtil.checkEmpty("条数", pageQuery.getSize());
     }
@@ -302,9 +305,9 @@ public abstract class BaseHandler<Repository extends ReactiveMongoRepository, En
      *
      * @param entity
      */
-    private void setId(Entity entity) {
+    private void setId(Object entity) {
         try {
-            Field fieldId = entityClass.getDeclaredField("id");
+            Field fieldId = entity.getClass().getDeclaredField("id");
             fieldId.setAccessible(true);
             fieldId.set(entity, fieldId);
         } catch (IllegalAccessException e) {
@@ -320,9 +323,9 @@ public abstract class BaseHandler<Repository extends ReactiveMongoRepository, En
      * @param entity
      * @return
      */
-    private Object getId(Entity entity) {
+    private Object getId(Object entity) {
         try {
-            Field fieldId = entityClass.getDeclaredField("id");
+            Field fieldId = entity.getClass().getDeclaredField("id");
             fieldId.setAccessible(true);
             return fieldId.get(entity);
         } catch (IllegalAccessException e) {

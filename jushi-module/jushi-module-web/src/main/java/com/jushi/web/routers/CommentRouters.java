@@ -20,10 +20,10 @@ public class CommentRouters extends BaseRouters<CommentHandler> {
                 commentHandler::issueComment
         ).andRoute(
                 RequestPredicates.GET("/queryPageArticle"),
-                commentHandler::commonQueryPageByArticle
+                commentHandler::commentQueryPageByArticle
         ).andRoute(
                 RequestPredicates.GET("/queryPageArticle/SSE"),
-                commentHandler::commonQueryPageByArticleSSE
+                commentHandler::commentQueryPageByArticleSSE
         );
         return RouterFunctions.nest(
                 //相当于类上面的@RequestMapping
