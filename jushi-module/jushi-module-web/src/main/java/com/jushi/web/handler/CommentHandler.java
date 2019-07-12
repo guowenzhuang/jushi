@@ -86,7 +86,7 @@ public class CommentHandler extends BaseHandler<CommentRepository, CommentPO> {
     }
 
 
-    protected Mono<ServerResponse> popularCommentpageQuery(Mono<CommentPageQueryByArticle> pageQueryMono,
+    private Mono<ServerResponse> popularCommentpageQuery(Mono<CommentPageQueryByArticle> pageQueryMono,
                                                            Function<Flux<ArticleCommentVo>, Mono<ServerResponse>> returnFunc) {
         return pageQueryMono.flatMap(pageQuery -> {
             checkPage(pageQuery);
@@ -107,7 +107,8 @@ public class CommentHandler extends BaseHandler<CommentRepository, CommentPO> {
                 Object[] likeIds = likeList.stream().map(CommentPO::getId).toArray();
                 articleLikeCriteria.and("id").nin(likeIds);
 
-                //只查询祖先评论
+                //父级评论为null的
+                articleLikeCriteria.and("parent").is(null);
 
                 Query query = new Query();
                 query.addCriteria(articleLikeCriteria);
