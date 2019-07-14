@@ -14,6 +14,7 @@ import java.util.List;
 
 /**
  * 帖子详情页评论VO
+ *
  * @author 80795
  * @date 2019/7/11 12:45
  */
@@ -61,6 +62,10 @@ public class ArticleCommentVo implements Serializable {
      * 子级评论
      */
     private List<ArticleCommentVo> popularChildren;
+    /**
+     * 回复人
+     */
+    private SysUserPO replyUser;
     /**
      * 祖先评论 (最父级评论)
      */

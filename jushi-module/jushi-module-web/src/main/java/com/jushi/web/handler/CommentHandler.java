@@ -214,7 +214,8 @@ public class CommentHandler extends BaseHandler<CommentRepository, CommentPO> {
                         BeanUtils.copyProperties(item, articleCommentVo);
                         //按照时间倒序取出前两个 并转成vo
                         if (item.getChildren() != null) {
-                            List<ArticleCommentVo> childComment = item.getChildren()
+                            List<CommentPO> children = item.getChildren();
+                            List<ArticleCommentVo> childComment = children
                                     .stream()
                                     .sorted(Comparator.comparing(CommentPO::getCreateTime).reversed())
                                     .limit(2)
@@ -224,6 +225,24 @@ public class CommentHandler extends BaseHandler<CommentRepository, CommentPO> {
                                         return aricleCommentChild;
                                     })
                                     .collect(Collectors.toList());
+
+                            //如果子评论只有一条 并且子评论还有一条评论
+                            if (children.size() == 1 && children.get(0).getChildren() != null && children.get(0).getChildren().size() > 0) {
+                                //把子评论 按照时间倒序存入子评论中
+
+                                childComment.add(children.get(0).getChildren().stream()
+                                        .sorted(Comparator.comparing(CommentPO::getCreateTime).reversed())
+                                        .map(c -> {
+                                            ArticleCommentVo aricleCommentChild = new ArticleCommentVo();
+                                            BeanUtils.copyProperties(c, aricleCommentChild);
+                                            //存回复人
+                                            aricleCommentChild.setReplyUser(c.getParent().getSysUser());
+                                            return aricleCommentChild;
+                                        })
+                                        .collect(Collectors.toList()).get(0)
+                                );
+                            }
+
                             articleCommentVo.setPopularChildren(childComment);
                         }
 
@@ -286,9 +305,7 @@ public class CommentHandler extends BaseHandler<CommentRepository, CommentPO> {
                         parentComment.addChilder(comment);
                         Long commentCount = parentComment.getCommentCount();
                         parentComment.setCommentCount(commentCount == null ? 1 : commentCount + 1);
-                        commentRepository.save(parentComment).subscribe(a -> {
-                            System.out.println(a);
-                        });
+                        commentRepository.save(parentComment).subscribe();
                     });
                 }
 

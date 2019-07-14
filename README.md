@@ -64,6 +64,7 @@
 
 
 ## 🔧 项目描述 <a name = "jushiDetail"></a>
+### 目录结构
 ```
 |-- jushi                                 
     |-- jushi-auth                     权限模块
@@ -78,7 +79,7 @@
     |-- sql                            sql脚本
 
 ```
-### 项目描述
+### 项目介绍
 项目采用微服务的架构并结合流行的webflux模式开发
 
 抛弃了原先的 controller service dao 分层开发
