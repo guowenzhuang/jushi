@@ -8,15 +8,18 @@ import com.jushi.api.pojo.Result;
 import com.jushi.api.pojo.po.ArticlePO;
 import com.jushi.api.pojo.po.CommentPO;
 import com.jushi.api.pojo.po.SysUserPO;
+import com.jushi.api.util.CheckUtil;
 import com.jushi.web.pojo.consts.CommentConst;
 import com.jushi.web.pojo.dto.IssueCommentDTO;
 import com.jushi.web.pojo.query.CommentPageQueryByArticle;
 import com.jushi.web.pojo.vo.ArticleCommentVo;
+import com.jushi.web.pojo.vo.CommentDetailsVo;
 import com.jushi.web.repository.ArticleRepository;
 import com.jushi.web.repository.CommentRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Example;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -31,6 +34,7 @@ import org.springframework.web.reactive.function.server.ServerResponse;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import java.util.function.Function;
@@ -52,6 +56,85 @@ public class CommentHandler extends BaseHandler<CommentRepository, CommentPO> {
     private CommentRepository commentRepository;
     @Autowired
     private ArticleRepository articleRepository;
+
+
+    /**
+     * 根据id查找
+     *
+     * @param request
+     * @return
+     */
+    @Override
+    public Mono<ServerResponse> queryById(ServerRequest request) {
+        //获取路径的id
+        String id = request.pathVariable("id");
+        if (StrUtil.isBlank(id)) {
+            CheckUtil.checkEmpty("id", id);
+        }
+        Mono<CommentPO> commentPOMono = commentRepository.findById(id);
+        //查找不到用户
+        return commentPOMono.flatMap(item -> {
+            ArticleCommentVo articleCommentVo = new ArticleCommentVo();
+            BeanUtils.copyProperties(item, articleCommentVo);
+            return ServerResponse.ok().body(Mono.just(articleCommentVo), ArticleCommentVo.class);
+        });
+    }
+
+    /**
+     * 帖子详情查询
+     *
+     * @param request
+     * @return
+     */
+    public Mono<ServerResponse> commentChild(ServerRequest request) {
+        //转换参数
+        String commentId = request.pathVariable("commentId");
+        return childCommentpageQuery(commentId, commentDetailsVo -> {
+            return ServerResponse.ok().contentType(MediaType.APPLICATION_JSON_UTF8).body(commentDetailsVo, CommentDetailsVo.class);
+        });
+    }
+
+    /**
+     * 帖子详情查询(SSE)
+     *
+     * @param request
+     * @return
+     */
+    public Mono<ServerResponse> commentChildSSE(ServerRequest request) {
+        //转换参数
+        String commentId = request.pathVariable("commentId");
+        return childCommentpageQuery(commentId, commentDetailsVo -> {
+            return sseReturn(commentDetailsVo, CommentDetailsVo.class);
+        });
+    }
+
+    /**
+     * 帖子详情查询(SSE)
+     * 按照时间倒序查询直属子评论
+     * 如果直属子评论还有子评论则插到下次直属子评论之前
+     *
+     * @param commentId  父级评论id
+     * @param returnFunc
+     * @return
+     */
+    private Mono<ServerResponse> childCommentpageQuery(String commentId, Function<Flux<CommentDetailsVo>, Mono<ServerResponse>> returnFunc) {
+        //校验必填值
+        CheckUtil.checkEmpty("评论详情id", commentId);
+
+        // 查询直属
+        Example<CommentPO> commentPOExample = Example.of(CommentPO.builder().parent(
+                CommentPO.builder().id(commentId).build()
+        ).build());
+        Sort sort = Sort.by(Sort.Direction.DESC, "create_time");
+        Flux<CommentPO> commentPOFlux = commentRepository.findAll(commentPOExample, sort);
+        Flux<CommentDetailsVo> commentDetailsVoFlux = commentPOFlux.map(item -> {
+            CommentDetailsVo commentDetailsVo = new CommentDetailsVo();
+            BeanUtils.copyProperties(item, commentDetailsVo);
+            commentDetailsVo.setChildren(item.getChildren());
+            return commentDetailsVo;
+        });
+        return returnFunc.apply(commentDetailsVoFlux);
+    }
 
 
     /**
@@ -87,7 +170,7 @@ public class CommentHandler extends BaseHandler<CommentRepository, CommentPO> {
 
 
     private Mono<ServerResponse> popularCommentpageQuery(Mono<CommentPageQueryByArticle> pageQueryMono,
-                                                           Function<Flux<ArticleCommentVo>, Mono<ServerResponse>> returnFunc) {
+                                                         Function<Flux<ArticleCommentVo>, Mono<ServerResponse>> returnFunc) {
         return pageQueryMono.flatMap(pageQuery -> {
             checkPage(pageQuery);
 
@@ -124,17 +207,34 @@ public class CommentHandler extends BaseHandler<CommentRepository, CommentPO> {
                     }
                     //分页数据
                     Flux<CommentPO> commentPOFlux = reactiveMongoTemplate.find(with, CommentPO.class);
-                    commentPOFlux=commentPOFlux.startWith(likeList);
+                    //喜欢数量高的三个排在最上面
+                    commentPOFlux = commentPOFlux.startWith(likeList);
                     Flux<ArticleCommentVo> articleCommentVoFlux = commentPOFlux.map(item -> {
                         ArticleCommentVo articleCommentVo = new ArticleCommentVo();
                         BeanUtils.copyProperties(item, articleCommentVo);
+                        //按照时间倒序取出前两个 并转成vo
+                        if (item.getChildren() != null) {
+                            List<ArticleCommentVo> childComment = item.getChildren()
+                                    .stream()
+                                    .sorted(Comparator.comparing(CommentPO::getCreateTime).reversed())
+                                    .limit(2)
+                                    .map(c -> {
+                                        ArticleCommentVo aricleCommentChild = new ArticleCommentVo();
+                                        BeanUtils.copyProperties(c, aricleCommentChild);
+                                        return aricleCommentChild;
+                                    })
+                                    .collect(Collectors.toList());
+                            articleCommentVo.setPopularChildren(childComment);
+                        }
+
+
                         return articleCommentVo;
                     });
+
+
                     return returnFunc.apply(articleCommentVoFlux);
                 });
             });
-
-
         }).switchIfEmpty(ServerResponse.ok().body(Mono.just(Result.error(StrUtil.format("分页查询{}参数不能为null", CommentPO.class.getName()))), Result.class));
     }
 
@@ -165,25 +265,11 @@ public class CommentHandler extends BaseHandler<CommentRepository, CommentPO> {
             //父级评论
             if (!StrUtil.isBlank(issueComment.getParentId())) {
                 commentPO.setParent(CommentPO.builder().id(issueComment.getParentId()).build());
-                // 获取父级评论
-                Mono<CommentPO> parentCommentMono = commentRepository.findById(issueComment.getParentId());
-                parentCommentMono.subscribe(parentComment -> {
-                    //父级评论 保存子级评论
-                    parentComment.addChilder(commentPO);
-                    Long commentCount = parentComment.getCommentCount();
-                    parentComment.setCommentCount(commentCount == null ? 1 : commentCount + 1);
-                    commentRepository.save(parentComment).subscribe();
-                });
             }
 
             //祖先评论
             if (!StrUtil.isBlank(issueComment.getAncestorId())) {
                 commentPO.setAncestor(CommentPO.builder().id(issueComment.getAncestorId()).build());
-                // 获取祖先评论
-                Mono<CommentPO> ancestorCommentMono = commentRepository.findById(issueComment.getAncestorId());
-                ancestorCommentMono.subscribe(ancestorComment -> {
-
-                });
             }
 
             //评论文章
@@ -191,6 +277,20 @@ public class CommentHandler extends BaseHandler<CommentRepository, CommentPO> {
 
             Mono<ArticlePO> articlePOMono = articleRepository.findById(issueComment.getArticleId());
             return saveComment.flatMap(comment -> {
+                //父级评论
+                if (!StrUtil.isBlank(issueComment.getParentId())) {
+                    // 获取父级评论
+                    Mono<CommentPO> parentCommentMono = commentRepository.findById(issueComment.getParentId());
+                    parentCommentMono.subscribe(parentComment -> {
+                        //父级评论 保存子级评论
+                        parentComment.addChilder(comment);
+                        Long commentCount = parentComment.getCommentCount();
+                        parentComment.setCommentCount(commentCount == null ? 1 : commentCount + 1);
+                        commentRepository.save(parentComment).subscribe(a -> {
+                            System.out.println(a);
+                        });
+                    });
+                }
 
                 return articlePOMono.flatMap(articlePO -> {
                     //评论+1
@@ -227,6 +327,5 @@ public class CommentHandler extends BaseHandler<CommentRepository, CommentPO> {
         }
         return null;
     }
-
 
 }

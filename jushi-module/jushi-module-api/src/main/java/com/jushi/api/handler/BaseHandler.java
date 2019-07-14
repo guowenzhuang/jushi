@@ -227,7 +227,7 @@ public abstract class BaseHandler<Repository extends ReactiveMongoRepository, En
 
                 Object lastId = getId(last);
                 Object itemId = getId(item);
-                log.info("当前值:{}  最终id:{}",item,lastId);
+                log.info("当前值id:{}  最终id:{}",itemId,lastId);
                 //判断是否是最终id
                 if (lastId.equals(itemId)) {
                     return entityBuilder

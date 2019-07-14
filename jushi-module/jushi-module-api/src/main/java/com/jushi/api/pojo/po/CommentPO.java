@@ -1,6 +1,5 @@
 package com.jushi.api.pojo.po;
 
-import cn.hutool.core.util.ArrayUtil;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -84,7 +83,7 @@ public class CommentPO implements Serializable {
      * @return
      */
     public CommentPO addChilder(CommentPO commentPO) {
-        if (ArrayUtil.isEmpty(this.children)) {
+        if (this.children==null) {
             this.children = new ArrayList<>();
         }
         this.children.add(commentPO);
