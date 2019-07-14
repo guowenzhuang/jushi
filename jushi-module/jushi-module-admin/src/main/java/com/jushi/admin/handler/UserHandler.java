@@ -35,6 +35,35 @@ public class UserHandler extends BaseHandler<UserRepository, SysUserPO> {
     private UserRepository userRepository;
 
     /**
+     * 修改密码
+     *
+     * @param request
+     * @return
+     */
+
+    public Mono<ServerResponse> changePassword(ServerRequest request) {
+        Mono<ChangePassDTO> userPasswordChange = request.bodyToMono(ChangePassDTO.class);
+        return userPasswordChange.flatMap(upc -> {
+            Example<SysUserPO> exampleUser = Example.of(
+                    SysUserPO.builder()
+                            .username(upc.getUsername())
+                            .build());
+            Mono<SysUserPO> user = userRepository.findOne(exampleUser);
+            return user.flatMap(u -> {
+                if (!encoder.matches(upc.getOldPassword(), u.getPassword())) {
+                    throw new CheckException("修改密码", upc.getOldPassword(), "原密码错误");
+                }
+                // 加密密码
+                u.setPassword(encoder.encode(upc.getNewPassword()));
+                return userRepository.save(u).flatMap(saveU ->{
+                    return ServerResponse.ok().body(Mono.just(Result.success("修改密码成功",saveU)),Result.class);
+                });
+            }).switchIfEmpty(ServerResponse.ok().body(Mono.just(Result.error(StrUtil.format("此用户不存在", upc.getUsername()))), Result.class));
+
+        }).switchIfEmpty(ServerResponse.ok().body(Mono.just(Result.error(StrUtil.format("{} 参数不能为null", RegisterUserDTO.class.getName()))), Result.class));
+    }
+
+    /**
      * 获取当前用户
      *
      * @param request
@@ -103,7 +132,7 @@ public class UserHandler extends BaseHandler<UserRepository, SysUserPO> {
         CheckUtil.checkEmpty("密码", registerUserDTO.getPassword());
     }
 
-    public Mono<UserDetails> getCurrentUser() {
+    private Mono<UserDetails> getCurrentUser() {
         Mono<UserDetails> user = ReactiveSecurityContextHolder.getContext()
                 .switchIfEmpty(Mono.error(new IllegalStateException("ReactiveSecurityContext is empty")))
                 .map(SecurityContext::getAuthentication)
@@ -111,52 +140,6 @@ public class UserHandler extends BaseHandler<UserRepository, SysUserPO> {
                 .map(item -> (UserDetails) item);
         return user;
     }
-    /**
-     * 修改密码
-     * @param request
-     * @return
-     */
-
-    public Mono<ServerResponse> changePassword(ServerRequest request) {
-        Mono<ChangePassDTO> change = request.bodyToMono(ChangePassDTO.class);
-        return change.flatMap(check -> {
-
-            SysUserPO sysUserPO = new SysUserPO();
-            BeanUtils.copyProperties(change, sysUserPO);
-            //获取原密码
-            SysUserPO oldpass = SysUserPO.builder().password(check.getOldPassword()).build();
-            SysUserPO newpass = SysUserPO.builder().password(check.getNewPassword()).build();
-            //获取当前用户
-            getCurrentUser();
-            //判断旧密码是否等于原密码
-            if(!(oldpass.equals(newpass))){
-                throw new CheckException("用户", "请检查旧密码是否正确");
-
-            }
-            //加密信息
-            sysUserPO.setPassword(encoder.encode(sysUserPO.getPassword()))
-                    .setCreatedBy(sysUserPO.getUsername())
-                    .setCreatedDate(new Date());
-              Mono<SysUserPO> saveUser = userRepository.save(sysUserPO);
-              return saveUser.flatMap(sa -> {
-                return ServerResponse.ok()
-                        .body(Mono.just(Result.success("修改成功",sa))
-                                , Result.class);
-            });
-        })
-                .switchIfEmpty(ServerResponse.ok().body(Mono.just(Result.error(StrUtil.format("{} 参数不能为null", RegisterUserDTO.class.getName()))), Result.class));
-    }
-
-
-
-
-
-
-
-
-
-
-
 
 }
 
