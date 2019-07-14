@@ -10,6 +10,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -75,4 +76,17 @@ public class CommentPO implements Serializable {
      */
     @DBRef
     private CommentPO ancestor;
+
+    /**
+     * 新增子级评论
+     *
+     * @return
+     */
+    public CommentPO addChilder(CommentPO commentPO) {
+        if (this.children==null) {
+            this.children = new ArrayList<>();
+        }
+        this.children.add(commentPO);
+        return this;
+    }
 }

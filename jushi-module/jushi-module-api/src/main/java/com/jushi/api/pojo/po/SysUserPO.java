@@ -52,6 +52,7 @@ public class SysUserPO implements Serializable {
     /**
      * 用户所有评论
      */
+    @DBRef
     private List<CommentPO> comments;
 
 }

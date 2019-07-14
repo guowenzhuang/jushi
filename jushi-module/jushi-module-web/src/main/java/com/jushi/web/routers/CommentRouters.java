@@ -10,6 +10,10 @@ import org.springframework.web.reactive.function.server.RouterFunction;
 import org.springframework.web.reactive.function.server.RouterFunctions;
 import org.springframework.web.reactive.function.server.ServerResponse;
 
+/**
+ * 评论route
+ * @author 80795
+ */
 @Configuration
 public class CommentRouters extends BaseRouters<CommentHandler> {
     @Bean
@@ -20,11 +24,14 @@ public class CommentRouters extends BaseRouters<CommentHandler> {
                 commentHandler::issueComment
         ).andRoute(
                 RequestPredicates.GET("/queryPageArticle"),
-                commentHandler::commonQueryPageByArticle
+                commentHandler::commentQueryPageByArticle
         ).andRoute(
                 RequestPredicates.GET("/queryPageArticle/SSE"),
-                commentHandler::commonQueryPageByArticleSSE
-        );
+                commentHandler::commentQueryPageByArticleSSE
+        ).andRoute(RequestPredicates.GET("/commentDetails/{commentId}"),
+                commentHandler::commentChild)
+                .andRoute(RequestPredicates.GET("/commentDetails/SSE/{commentId}"),
+                commentHandler::commentChildSSE);
         return RouterFunctions.nest(
                 //相当于类上面的@RequestMapping
                 RequestPredicates.path("/comment"),
