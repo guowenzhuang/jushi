@@ -27,6 +27,10 @@ public class UserRouters extends BaseRouters<UserHandler> {
                 .andRoute(
                         RequestPredicates.GET("/getCurrentUser"),
                         userHandler::getCurrentUser
+                ).andRoute(
+                        RequestPredicates.PUT("/changePassword")
+                                .and(RequestPredicates.accept(MediaType.APPLICATION_JSON_UTF8)),
+                        userHandler::changePassword
                 );
         return RouterFunctions.nest(
                 //相当于类上面的@RequestMapping

@@ -9,9 +9,9 @@ import lombok.Data;
 @Data
 public class ChangePassDTO {
     /**
-     * 用户id
+     * 用户名称
      */
-    private String id;
+    private String username;
     /**
      * 原密码
      */
