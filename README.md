@@ -107,11 +107,11 @@
 | webflux          | 反应式编程                     | https://docs.spring.io/spring-framework/docs/5.0.0.BUILD-SNAPSHOT/spring-framework-reference/html/web-reactive.html |
 
 
-## 🚀 Deployment <a name = "todo"></a>
+## 🚀 TODO <a name = "todo"></a>
 - admin 后台管理未开发
 - 搜索未集成es
 
-## ✍️ Authors <a name = "authors"></a>
+## ✍️ 作者 <a name = "authors"></a>
 - [@gwz](https://guowenzhuang.gitee.io/boke/) 
 
 ## 🎉 致谢 <a name = "thank"></a>

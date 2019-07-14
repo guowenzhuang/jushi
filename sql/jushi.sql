@@ -11,7 +11,7 @@
  Target Server Version : 40010
  File Encoding         : 65001
 
- Date: 10/07/2019 08:13:32
+ Date: 14/07/2019 15:51:26
 */
 
 
@@ -33,7 +33,7 @@ db.getCollection("article").insert([ {
     "is_public": true,
     "scan_count": NumberLong("0"),
     "like_count": NumberLong("0"),
-    "comment_count": NumberLong("6"),
+    "comment_count": NumberLong("0"),
     weight: NumberLong("0")
 } ]);
 db.getCollection("article").insert([ {
@@ -45,7 +45,7 @@ db.getCollection("article").insert([ {
     "is_public": true,
     "scan_count": NumberLong("0"),
     "like_count": NumberLong("0"),
-    "comment_count": NumberLong("0"),
+    "comment_count": NumberLong("1"),
     weight: NumberLong("0")
 } ]);
 db.getCollection("article").insert([ {
@@ -81,7 +81,163 @@ db.getCollection("article").insert([ {
     "is_public": true,
     "scan_count": NumberLong("0"),
     "like_count": NumberLong("0"),
-    "comment_count": NumberLong("1"),
+    "comment_count": NumberLong("0"),
+    weight: NumberLong("0")
+} ]);
+db.getCollection("article").insert([ {
+    _id: ObjectId("5d25645d6b4fa407606723b1"),
+    plate: DBRef("plate", ObjectId("5d0f76a4e60170361824b2ba")),
+    sysUser: DBRef("sys_user", ObjectId("5d25620d6b4fa429d0fa2355")),
+    title: "壮壮的小迷弟呀",
+    content: "你见青山多妩媚<div>料青山 见我</div><div>应如是</div><hr>",
+    "is_public": true,
+    "scan_count": NumberLong("0"),
+    "like_count": NumberLong("0"),
+    "comment_count": NumberLong("0"),
+    weight: NumberLong("0")
+} ]);
+db.getCollection("article").insert([ {
+    _id: ObjectId("5d2a03d1641f581024ce658a"),
+    plate: DBRef("plate", ObjectId("5d0f76a4e60170361824b2ba")),
+    sysUser: DBRef("sys_user", ObjectId("5d24b9fe1676770b905dd3d1")),
+    title: "回复测试001",
+    content: "回复测试",
+    "is_public": true,
+    "scan_count": NumberLong("0"),
+    "like_count": NumberLong("0"),
+    "comment_count": NumberLong("4"),
+    weight: NumberLong("0")
+} ]);
+db.getCollection("article").insert([ {
+    _id: ObjectId("5d2a0811641f581024ce659c"),
+    plate: DBRef("plate", ObjectId("5d0f76a4e60170361824b1bb")),
+    sysUser: DBRef("sys_user", ObjectId("5d20cb4c38bf533e98f66685")),
+    title: "郭文壮是猪猪女孩🐷",
+    content: "",
+    "is_public": true,
+    "scan_count": NumberLong("0"),
+    "like_count": NumberLong("0"),
+    "comment_count": NumberLong("9"),
+    weight: NumberLong("0")
+} ]);
+db.getCollection("article").insert([ {
+    _id: ObjectId("5d2a083c641f581024ce659d"),
+    plate: DBRef("plate", ObjectId("5d0f76a4e60170361824b2ba")),
+    sysUser: DBRef("sys_user", ObjectId("5d20cb4c38bf533e98f66685")),
+    title: "郭文壮是猪猪女孩",
+    content: "",
+    "is_public": true,
+    "scan_count": NumberLong("0"),
+    "like_count": NumberLong("0"),
+    "comment_count": NumberLong("0"),
+    weight: NumberLong("0")
+} ]);
+db.getCollection("article").insert([ {
+    _id: ObjectId("5d2a0866641f581024ce659e"),
+    plate: DBRef("plate", ObjectId("5d0f76a4e60170361824b1bb")),
+    sysUser: DBRef("sys_user", ObjectId("5d20cb4c38bf533e98f66685")),
+    title: "郭文壮是猪猪侠",
+    content: "",
+    "is_public": true,
+    "scan_count": NumberLong("0"),
+    "like_count": NumberLong("0"),
+    "comment_count": NumberLong("0"),
+    weight: NumberLong("0")
+} ]);
+db.getCollection("article").insert([ {
+    _id: ObjectId("5d2a086a641f581024ce659f"),
+    plate: DBRef("plate", ObjectId("5d0f76a4e60170361824b1bb")),
+    sysUser: DBRef("sys_user", ObjectId("5d24b9fe1676770b905dd3d1")),
+    title: "开源测试01",
+    content: "开源测试",
+    "is_public": true,
+    "scan_count": NumberLong("0"),
+    "like_count": NumberLong("0"),
+    "comment_count": NumberLong("0"),
+    weight: NumberLong("0")
+} ]);
+db.getCollection("article").insert([ {
+    _id: ObjectId("5d2a0896641f581024ce65a0"),
+    plate: DBRef("plate", ObjectId("5d0f76a4e60170361824b2b9")),
+    sysUser: DBRef("sys_user", ObjectId("5d20cb4c38bf533e98f66685")),
+    title: "bug哼╭(╯^╰)╮",
+    content: "",
+    "is_public": true,
+    "scan_count": NumberLong("0"),
+    "like_count": NumberLong("0"),
+    "comment_count": NumberLong("0"),
+    weight: NumberLong("0")
+} ]);
+db.getCollection("article").insert([ {
+    _id: ObjectId("5d2a08ac641f581024ce65a1"),
+    plate: DBRef("plate", ObjectId("5d0f76a4e60170361824b2bb")),
+    sysUser: DBRef("sys_user", ObjectId("5d20cb4c38bf533e98f66685")),
+    title: "😳😳呼呼呼",
+    content: "",
+    "is_public": true,
+    "scan_count": NumberLong("0"),
+    "like_count": NumberLong("0"),
+    "comment_count": NumberLong("0"),
+    weight: NumberLong("0")
+} ]);
+db.getCollection("article").insert([ {
+    _id: ObjectId("5d2a08c2641f581024ce65a2"),
+    plate: DBRef("plate", ObjectId("5d0f76a4e60170361824b2bc")),
+    sysUser: DBRef("sys_user", ObjectId("5d20cb4c38bf533e98f66685")),
+    title: "哈哈哈哈哈哈",
+    content: "",
+    "is_public": true,
+    "scan_count": NumberLong("0"),
+    "like_count": NumberLong("0"),
+    "comment_count": NumberLong("0"),
+    weight: NumberLong("0")
+} ]);
+db.getCollection("article").insert([ {
+    _id: ObjectId("5d2a08de641f581024ce65a3"),
+    plate: DBRef("plate", ObjectId("5d0f76a4e60170361824b1bb")),
+    sysUser: DBRef("sys_user", ObjectId("5d20cb4c38bf533e98f66685")),
+    title: "郭文壮傻逼 略",
+    content: "",
+    "is_public": true,
+    "scan_count": NumberLong("0"),
+    "like_count": NumberLong("0"),
+    "comment_count": NumberLong("0"),
+    weight: NumberLong("0")
+} ]);
+db.getCollection("article").insert([ {
+    _id: ObjectId("5d2a0908641f581024ce65a4"),
+    plate: DBRef("plate", ObjectId("5d0f76a4e60170361824b2b9")),
+    sysUser: DBRef("sys_user", ObjectId("5d24b9fe1676770b905dd3d1")),
+    title: "哈哈哈哈哈哈",
+    content: "哈",
+    "is_public": true,
+    "scan_count": NumberLong("0"),
+    "like_count": NumberLong("0"),
+    "comment_count": NumberLong("0"),
+    weight: NumberLong("0")
+} ]);
+db.getCollection("article").insert([ {
+    _id: ObjectId("5d2a093e641f581024ce65a6"),
+    plate: DBRef("plate", ObjectId("5d0f76a4e60170361824b1bb")),
+    sysUser: DBRef("sys_user", ObjectId("5d24b9fe1676770b905dd3d1")),
+    title: "sdsdsd",
+    content: "sdsd",
+    "is_public": true,
+    "scan_count": NumberLong("0"),
+    "like_count": NumberLong("0"),
+    "comment_count": NumberLong("0"),
+    weight: NumberLong("0")
+} ]);
+db.getCollection("article").insert([ {
+    _id: ObjectId("5d2a0c02641f581024ce65a7"),
+    plate: DBRef("plate", ObjectId("5d0f76a4e60170361824b1bb")),
+    sysUser: DBRef("sys_user", ObjectId("5d20cb4c38bf533e98f66685")),
+    title: "好不好垃圾呸",
+    content: "",
+    "is_public": true,
+    "scan_count": NumberLong("0"),
+    "like_count": NumberLong("0"),
+    "comment_count": NumberLong("0"),
     weight: NumberLong("0")
 } ]);
 
@@ -95,60 +251,157 @@ db.createCollection("comment");
 // Documents of comment
 // ----------------------------
 db.getCollection("comment").insert([ {
-    _id: ObjectId("5d24bd3f167677242810bb06"),
-    article: DBRef("article", ObjectId("5d21b51b74a8973fdcafda02")),
+    _id: ObjectId("5d2a053b641f581024ce6596"),
+    article: DBRef("article", ObjectId("5d2a03d1641f581024ce658a")),
+    sysUser: DBRef("sys_user", ObjectId("5d24b9fe1676770b905dd3d1")),
+    content: "q",
+    "create_time": ISODate("2019-07-13T16:22:19.106Z"),
+    parent: DBRef("comment", ObjectId("5d2a03ef641f581024ce658c")),
+    ancestor: DBRef("comment", ObjectId("5d2a03ef641f581024ce658c"))
+} ]);
+db.getCollection("comment").insert([ {
+    _id: ObjectId("5d2a059d641f581024ce6597"),
+    article: DBRef("article", ObjectId("5d2a03d1641f581024ce658a")),
+    sysUser: DBRef("sys_user", ObjectId("5d24b9fe1676770b905dd3d1")),
+    content: "回复测试111",
+    "create_time": ISODate("2019-07-13T16:23:57.442Z"),
+    "comment_count": NumberLong("2"),
+    children: [
+        DBRef("comment", ObjectId("5d2a05ad641f581024ce6599")),
+        DBRef("comment", ObjectId("5d2a05c1641f581024ce659a"))
+    ]
+} ]);
+db.getCollection("comment").insert([ {
+    _id: ObjectId("5d2a05a2641f581024ce6598"),
+    article: DBRef("article", ObjectId("5d2a03d1641f581024ce658a")),
+    sysUser: DBRef("sys_user", ObjectId("5d24b9fe1676770b905dd3d1")),
+    content: "回复测试222",
+    "create_time": ISODate("2019-07-13T16:24:02.284Z")
+} ]);
+db.getCollection("comment").insert([ {
+    _id: ObjectId("5d2a05ad641f581024ce6599"),
+    article: DBRef("article", ObjectId("5d2a03d1641f581024ce658a")),
+    sysUser: DBRef("sys_user", ObjectId("5d24b9fe1676770b905dd3d1")),
+    content: "回复测试11111",
+    "create_time": ISODate("2019-07-13T16:24:13.207Z"),
+    parent: DBRef("comment", ObjectId("5d2a059d641f581024ce6597")),
+    ancestor: DBRef("comment", ObjectId("5d2a059d641f581024ce6597"))
+} ]);
+db.getCollection("comment").insert([ {
+    _id: ObjectId("5d2a05c1641f581024ce659a"),
+    article: DBRef("article", ObjectId("5d2a03d1641f581024ce658a")),
+    sysUser: DBRef("sys_user", ObjectId("5d24b9fe1676770b905dd3d1")),
+    content: "回复测试2",
+    "create_time": ISODate("2019-07-13T16:24:33.094Z"),
+    parent: DBRef("comment", ObjectId("5d2a059d641f581024ce6597")),
+    ancestor: DBRef("comment", ObjectId("5d2a059d641f581024ce6597"))
+} ]);
+db.getCollection("comment").insert([ {
+    _id: ObjectId("5d2a07d5641f581024ce659b"),
+    article: DBRef("article", ObjectId("5d21b94074a8973fdcafda03")),
+    sysUser: DBRef("sys_user", ObjectId("5d20cb4c38bf533e98f66685")),
+    content: "哼",
+    "create_time": ISODate("2019-07-13T16:33:25.922Z")
+} ]);
+db.getCollection("comment").insert([ {
+    _id: ObjectId("5d2a091b641f581024ce65a5"),
+    article: DBRef("article", ObjectId("5d2288912b45cb1b4c21e26b")),
+    sysUser: DBRef("sys_user", ObjectId("5d20cb4c38bf533e98f66685")),
+    content: "呸",
+    "create_time": ISODate("2019-07-13T16:38:51.919Z")
+} ]);
+db.getCollection("comment").insert([ {
+    _id: ObjectId("5d2a0c1f641f581024ce65a8"),
+    article: DBRef("article", ObjectId("5d2a0811641f581024ce659c")),
+    sysUser: DBRef("sys_user", ObjectId("5d20cb4c38bf533e98f66685")),
+    content: "谁给我评论谁垃圾",
+    "create_time": ISODate("2019-07-13T16:51:43.055Z"),
+    "comment_count": NumberLong("2"),
+    children: [
+        DBRef("comment", ObjectId("5d2a0c5d641f581024ce65aa")),
+        DBRef("comment", ObjectId("5d2a0dd5641f581024ce65af"))
+    ]
+} ]);
+db.getCollection("comment").insert([ {
+    _id: ObjectId("5d2a0c21641f581024ce65a9"),
+    article: DBRef("article", ObjectId("5d2a0811641f581024ce659c")),
+    sysUser: DBRef("sys_user", ObjectId("5d24b9fe1676770b905dd3d1")),
+    content: "谁是猪猪女孩",
+    "create_time": ISODate("2019-07-13T16:51:45.278Z")
+} ]);
+db.getCollection("comment").insert([ {
+    _id: ObjectId("5d2a0c5d641f581024ce65aa"),
+    article: DBRef("article", ObjectId("5d2a0811641f581024ce659c")),
+    sysUser: DBRef("sys_user", ObjectId("5d24b9fe1676770b905dd3d1")),
+    content: "我是垃圾🦊🦊",
+    "create_time": ISODate("2019-07-13T16:52:45.357Z"),
+    "comment_count": NumberLong("4"),
+    parent: DBRef("comment", ObjectId("5d2a0c1f641f581024ce65a8")),
+    children: [
+        DBRef("comment", ObjectId("5d2a0d54641f581024ce65ab")),
+        DBRef("comment", ObjectId("5d2a0d61641f581024ce65ac")),
+        DBRef("comment", ObjectId("5d2a0d7a641f581024ce65ad")),
+        DBRef("comment", ObjectId("5d2a0d89641f581024ce65ae"))
+    ],
+    ancestor: DBRef("comment", ObjectId("5d2a0c1f641f581024ce65a8"))
+} ]);
+db.getCollection("comment").insert([ {
+    _id: ObjectId("5d2a0d54641f581024ce65ab"),
+    article: DBRef("article", ObjectId("5d2a0811641f581024ce659c")),
     sysUser: DBRef("sys_user", ObjectId("5d24b9fe1676770b905dd3d1")),
     content: "哈哈",
-    "create_time": ISODate("2019-07-09T16:13:51.674Z")
+    "create_time": ISODate("2019-07-13T16:56:52.774Z"),
+    parent: DBRef("comment", ObjectId("5d2a0c5d641f581024ce65aa")),
+    ancestor: DBRef("comment", ObjectId("5d2a0c1f641f581024ce65a8"))
 } ]);
 db.getCollection("comment").insert([ {
-    _id: ObjectId("5d24bd86167677242810bb07"),
-    article: DBRef("article", ObjectId("5d21b51b74a8973fdcafda02")),
-    sysUser: DBRef("sys_user", ObjectId("5d24b9fe1676770b905dd3d1")),
-    content: "1",
-    "create_time": ISODate("2019-07-09T16:15:02.127Z")
+    _id: ObjectId("5d2a0d61641f581024ce65ac"),
+    article: DBRef("article", ObjectId("5d2a0811641f581024ce659c")),
+    sysUser: DBRef("sys_user", ObjectId("5d20cb4c38bf533e98f66685")),
+    content: "你就是垃圾",
+    "create_time": ISODate("2019-07-13T16:57:05.899Z"),
+    parent: DBRef("comment", ObjectId("5d2a0c5d641f581024ce65aa")),
+    ancestor: DBRef("comment", ObjectId("5d2a0c1f641f581024ce65a8"))
 } ]);
 db.getCollection("comment").insert([ {
-    _id: ObjectId("5d24bd87167677242810bb08"),
-    article: DBRef("article", ObjectId("5d21b51b74a8973fdcafda02")),
+    _id: ObjectId("5d2a0d7a641f581024ce65ad"),
+    article: DBRef("article", ObjectId("5d2a0811641f581024ce659c")),
     sysUser: DBRef("sys_user", ObjectId("5d24b9fe1676770b905dd3d1")),
-    content: "2",
-    "create_time": ISODate("2019-07-09T16:15:03.893Z")
+    content: "我不是",
+    "create_time": ISODate("2019-07-13T16:57:30.483Z"),
+    parent: DBRef("comment", ObjectId("5d2a0c5d641f581024ce65aa")),
+    ancestor: DBRef("comment", ObjectId("5d2a0c1f641f581024ce65a8"))
 } ]);
 db.getCollection("comment").insert([ {
-    _id: ObjectId("5d24bd89167677242810bb09"),
-    article: DBRef("article", ObjectId("5d21b51b74a8973fdcafda02")),
+    _id: ObjectId("5d2a0d89641f581024ce65ae"),
+    article: DBRef("article", ObjectId("5d2a0811641f581024ce659c")),
     sysUser: DBRef("sys_user", ObjectId("5d24b9fe1676770b905dd3d1")),
-    content: "3",
-    "create_time": ISODate("2019-07-09T16:15:05.721Z")
+    content: "哈",
+    "create_time": ISODate("2019-07-13T16:57:45.951Z"),
+    parent: DBRef("comment", ObjectId("5d2a0c5d641f581024ce65aa")),
+    ancestor: DBRef("comment", ObjectId("5d2a0c1f641f581024ce65a8"))
 } ]);
 db.getCollection("comment").insert([ {
-    _id: ObjectId("5d24be57167677242810bb0a"),
-    article: DBRef("article", ObjectId("5d21b51b74a8973fdcafda02")),
+    _id: ObjectId("5d2a0dd5641f581024ce65af"),
+    article: DBRef("article", ObjectId("5d2a0811641f581024ce659c")),
     sysUser: DBRef("sys_user", ObjectId("5d24b9fe1676770b905dd3d1")),
-    content: "看看",
-    "create_time": ISODate("2019-07-09T16:18:31.037Z")
+    content: "没",
+    "create_time": ISODate("2019-07-13T16:59:01.779Z"),
+    "comment_count": NumberLong("1"),
+    parent: DBRef("comment", ObjectId("5d2a0c1f641f581024ce65a8")),
+    children: [
+        DBRef("comment", ObjectId("5d2a0e96641f581024ce65b0"))
+    ],
+    ancestor: DBRef("comment", ObjectId("5d2a0c1f641f581024ce65a8"))
 } ]);
 db.getCollection("comment").insert([ {
-    _id: ObjectId("5d2518366b4fa407606723ae"),
-    article: DBRef("article", ObjectId("5d233e6f2b45cb1b4c21e26c")),
+    _id: ObjectId("5d2a0e96641f581024ce65b0"),
+    article: DBRef("article", ObjectId("5d2a0811641f581024ce659c")),
     sysUser: DBRef("sys_user", ObjectId("5d24b9fe1676770b905dd3d1")),
-    content: "低调低调",
-    "create_time": ISODate("2019-07-09T22:41:58.412Z")
-} ]);
-db.getCollection("comment").insert([ {
-    _id: ObjectId("5d25186e6b4fa407606723af"),
-    article: DBRef("article", ObjectId("5d2288912b45cb1b4c21e26b")),
-    sysUser: DBRef("sys_user", ObjectId("5d24b9fe1676770b905dd3d1")),
-    content: "自恋达人",
-    "create_time": ISODate("2019-07-09T22:42:54.681Z")
-} ]);
-db.getCollection("comment").insert([ {
-    _id: ObjectId("5d252b416b4fa407606723b0"),
-    article: DBRef("article", ObjectId("5d21b51b74a8973fdcafda02")),
-    sysUser: DBRef("sys_user", ObjectId("5d24b9fe1676770b905dd3d1")),
-    content: "测试",
-    "create_time": ISODate("2019-07-10T00:03:13.465Z")
+    content: "ok",
+    "create_time": ISODate("2019-07-13T17:02:14.416Z"),
+    parent: DBRef("comment", ObjectId("5d2a0dd5641f581024ce65af")),
+    ancestor: DBRef("comment", ObjectId("5d2a0c1f641f581024ce65a8"))
 } ]);
 
 // ----------------------------
@@ -195,11 +448,11 @@ db.getCollection("plate").insert([ {
     state: true
 } ]);
 db.getCollection("plate").insert([ {
-    _id: "5d0f76a4e60170361824b1bb",
+    _id: ObjectId("5d0f76a4e60170361824b1bb"),
     name: "开源",
-    "click_count": 0,
-    "topic_count": 0,
-    weight: 30,
+    "click_count": NumberLong("0"),
+    "topic_count": NumberLong("0"),
+    weight: NumberLong("22"),
     state: true
 } ]);
 
@@ -303,4 +556,18 @@ db.getCollection("sys_user").insert([ {
     "created_date": ISODate("2019-07-09T15:59:58.9Z"),
     password: "$2a$10$hbKSBD3V3B31SYsddp9iY.GSphrM85OYakU4SiDYCFS2XetqUomsm",
     username: "巨石"
+} ]);
+db.getCollection("sys_user").insert([ {
+    _id: ObjectId("5d25620d6b4fa429d0fa2355"),
+    "created_by": "青山",
+    "created_date": ISODate("2019-07-10T03:57:01.815Z"),
+    password: "$2a$10$k9WJqgHYPve.sXMHF/iZtOr/84iHmYuBxfzDqBuHayQNntINsDfva",
+    username: "青山"
+} ]);
+db.getCollection("sys_user").insert([ {
+    _id: ObjectId("5d29dd4b641f5835702b7020"),
+    "created_by": "13779396522",
+    "created_date": ISODate("2019-07-13T13:31:55.966Z"),
+    password: "$2a$10$451aQ4iPxoiVp7oigYlZcO3xj9G5TvLDmL3D.Xwk45IgfgcJrlhCu",
+    username: "13779396522"
 } ]);
