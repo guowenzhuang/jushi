@@ -117,8 +117,7 @@
 - 文章 由base64上传改为文件上传 mongodb gridfs
 - 个人中心(修改密码,修改头像,查看自己的贴子,点赞)
 - 可以给文章和评论点赞
-- 下方导航图标字体修改
-- 下方导航要固定在下方
+- 新增文章时 增加文章介绍和文章图片字段
 
 ## ✍️ 作者 <a name = "authors"></a>
 - [@gwz](https://guowenzhuang.gitee.io/boke/) 
