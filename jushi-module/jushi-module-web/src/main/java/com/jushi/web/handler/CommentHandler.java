@@ -309,6 +309,19 @@ public class CommentHandler extends BaseHandler<CommentRepository, CommentPO> {
                     });
                 }
 
+                //祖先评论
+                if (!StrUtil.isBlank(issueComment.getAncestorId())) {
+                    // 获取父级评论
+                    Mono<CommentPO> ancestorCommentMono = commentRepository.findById(issueComment.getAncestorId());
+                    ancestorCommentMono.subscribe(ancestorComment -> {
+                        //祖先评论+1
+                        Long commentCount = ancestorComment.getCommentCount();
+                        ancestorComment.setCommentCount(commentCount == null ? 1 : commentCount + 1);
+                        commentRepository.save(ancestorComment).subscribe();
+                    });
+                }
+
+
                 return articlePOMono.flatMap(articlePO -> {
                     //评论+1
                     Long commentCount = articlePO.getCommentCount();

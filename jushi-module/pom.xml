@@ -15,6 +15,7 @@
         <module>jushi-module-web</module>
         <module>jushi-module-api</module>
         <module>jushi-module-admin</module>
+        <module>jushi-module-oss</module>
     </modules>
 
 

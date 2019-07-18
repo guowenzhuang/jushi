@@ -1,20 +1,16 @@
-package com.jushi.web.config;
+package com.jushi.oss.config;
 
 import com.jushi.security.common.config.AuthorizeConfigProvider;
 import org.springframework.security.config.web.server.ServerHttpSecurity;
 import org.springframework.stereotype.Component;
 
 @Component
-public class ArticleAuthorizeConfigProvider implements AuthorizeConfigProvider {
+public class OssAuthorizeConfigProvider implements AuthorizeConfigProvider {
 
     @Override
     public void config(ServerHttpSecurity.AuthorizeExchangeSpec config) {
         config
-                .pathMatchers(
-                        "/**",
-                        "/articleHomePage",
-                        "/stream/articleHomePage",
-                        "/plate")
+                .pathMatchers("/oss.**")
                 .permitAll();
     }
 }

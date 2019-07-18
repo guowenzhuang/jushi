@@ -25,6 +25,8 @@ import org.springframework.web.reactive.function.server.ServerRequest;
 import org.springframework.web.reactive.function.server.ServerResponse;
 import reactor.core.publisher.Mono;
 
+import java.util.Date;
+
 /**
  * @author 80795
  * @date 2019/6/23 21:20
@@ -134,15 +136,21 @@ public class ArticleHandler extends BaseHandler<ArticleRepository, ArticlePO> {
             articlePO.setSysUser(SysUserPO.builder().id(issueArticle.getUserId()).build());
             //板块
             articlePO.setPlate(PlatePO.builder().id(issueArticle.getPlateId()).build());
+
+            //默认值
             articlePO.setIsPublic(true);
             articlePO.setScanCount(0L);
             articlePO.setLikeCount(0L);
             articlePO.setCommentCount(0L);
             articlePO.setWeight(0L);
+            articlePO.setCreateTime(new Date());
+
+            // 内容转换 取得50个字
+
             Mono<ArticlePO> saveArtice = articleRepository.save(articlePO);
             return saveArtice.flatMap(sa -> {
                 return ServerResponse.ok()
-                        .body(Mono.just(Result.success("发表成功",sa))
+                        .body(Mono.just(Result.success("发表成功", sa))
                                 , Result.class);
             });
         })

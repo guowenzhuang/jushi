@@ -31,7 +31,7 @@
 
 > 可以在 application.yml 中修改账号密码等配置
 
-- jdk8
+- jdk11
 
 - redis5
 
