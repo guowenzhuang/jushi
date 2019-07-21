@@ -1,12 +1,12 @@
 package com.jushi.web.pojo.vo;
 
-import com.jushi.api.pojo.po.ArticlePO;
-import com.jushi.api.pojo.po.SysUserPO;
+import com.jushi.api.pojo.po.CommentPO;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
+import org.springframework.beans.BeanUtils;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -33,11 +33,11 @@ public class ArticleCommentVo implements Serializable {
     /**
      * 评论文章
      */
-    private ArticlePO article;
+    private ArticleVo article;
     /**
      * 评论人
      */
-    private SysUserPO sysUser;
+    private SysUserVo sysUser;
     /**
      * 评论内容
      */
@@ -65,9 +65,24 @@ public class ArticleCommentVo implements Serializable {
     /**
      * 回复人
      */
-    private SysUserPO replyUser;
+    private SysUserVo replyUser;
     /**
      * 祖先评论 (最父级评论)
      */
     private ArticleCommentVo ancestor;
+
+    public void copyProperties(CommentPO commentPO) {
+        // 拷贝基本属性
+        BeanUtils.copyProperties(commentPO, this);
+
+        // 拷贝文章
+        ArticleVo articleVo = new ArticleVo();
+        articleVo.copyProperties(commentPO.getArticle());
+        this.article = articleVo;
+
+        // 拷贝用户
+        SysUserVo sysUser = new SysUserVo();
+        sysUser.copyProperties(commentPO.getSysUser());
+        this.sysUser = sysUser;
+    }
 }

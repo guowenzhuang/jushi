@@ -8,24 +8,35 @@ import com.jushi.api.pojo.Result;
 import com.jushi.api.pojo.po.ArticlePO;
 import com.jushi.api.pojo.po.PlatePO;
 import com.jushi.api.pojo.po.SysUserPO;
+import com.jushi.api.pojo.query.PageQuery;
 import com.jushi.web.pojo.dto.IssueArticleDTO;
+import com.jushi.web.pojo.dto.LikeArticleDTO;
 import com.jushi.web.pojo.query.ArticlePageQueryByPlate;
 import com.jushi.web.pojo.query.ArticleSearchQuery;
+import com.jushi.web.pojo.vo.ArticleVo;
 import com.jushi.web.repository.ArticleRepository;
+import com.jushi.web.repository.UserRepository;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.mongodb.core.ReactiveMongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.http.MediaType;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.ReactiveSecurityContextHolder;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.reactive.function.server.ServerRequest;
 import org.springframework.web.reactive.function.server.ServerResponse;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.function.Function;
 
 /**
  * @author 80795
@@ -41,6 +52,105 @@ public class ArticleHandler extends BaseHandler<ArticleRepository, ArticlePO> {
     private ReactiveMongoTemplate reactiveMongoTemplate;
     @Autowired
     private ArticleRepository articleRepository;
+    @Autowired
+    private UserRepository userRepository;
+
+    /**
+     * 分页查询(SSE)
+     *
+     * @param request
+     * @return
+     */
+    @Override
+    public Mono<ServerResponse> pageSSE(ServerRequest request) {
+        MultiValueMap<String, String> params = request.queryParams();
+        PageQuery pageQuery = BeanUtil.mapToBean(params.toSingleValueMap(), PageQuery.class, false);
+        return articlePageQuer(Mono.just(pageQuery), query -> {
+            return getQuery(query);
+        }, entityFlux -> {
+            return sseReturn(entityFlux, ArticleVo.class);
+        });
+    }
+
+
+    private Mono<ServerResponse> articlePageQuer(Mono<PageQuery> pageQueryMono,
+                                                 Function<PageQuery, Query> queryFunction,
+                                                 Function<Flux<ArticleVo>, Mono<ServerResponse>> returnFunc) {
+        return pageQueryMono.flatMap(pageQuery -> {
+            checkPage(pageQuery);
+            Query query = queryFunction.apply(pageQuery);
+            Pageable pageable = getPageable(pageQuery);
+            Query with = query.with(pageable);
+            Mono<Long> count = reactiveMongoTemplate.count(with, ArticlePO.class);
+            return count.flatMap(sums -> {
+                long size = pageQuery.getPage() * pageQuery.getSize();
+                if (sums.longValue() == size) {
+                    return sSEReponseBuild(Mono.just(Result.error("无数据")), Result.class);
+                }
+                //获取数据
+                Flux<ArticlePO> entityFlux = reactiveMongoTemplate.find(with, ArticlePO.class);
+                Flux<ArticleVo> articleVoFlux = entityFlux.map(item -> {
+                    ArticleVo articleVo = new ArticleVo();
+                    articleVo.copyProperties(item);
+                    return articleVo;
+                });
+                return returnFunc.apply(articleVoFlux);
+            });
+        }).switchIfEmpty(ServerResponse.ok().body(Mono.just(Result.error(StrUtil.format("分页查询{}参数不能为null", ArticlePO.class.getName()))), Result.class));
+
+    }
+
+    /**
+     * 文章点赞
+     *
+     * @param request
+     * @return
+     */
+    public Mono<ServerResponse> like(ServerRequest request) {
+        Mono<LikeArticleDTO> likeArticleDTOMono = request.bodyToMono(LikeArticleDTO.class);
+        return likeArticleDTOMono.flatMap(likeArticleDTO -> {
+            // 字段校验
+            if (StrUtil.isBlank(likeArticleDTO.getArticleId())) {
+                return Mono.error(new CheckException("articleId", likeArticleDTO.getArticleId()));
+            }
+            if (StrUtil.isBlank(likeArticleDTO.getUserId())) {
+                return Mono.error(new CheckException("userId", likeArticleDTO.getUserId()));
+            }
+            return userRepository.findById(likeArticleDTO.getUserId()).flatMap(user -> {
+                if (user.getLikeArticles() == null) {
+                    user.setLikeArticles(new ArrayList<>());
+                }
+                boolean isLike = user.getLikeArticles().stream().map(ArticlePO::getId)
+                        .anyMatch(articleId -> articleId.equals(likeArticleDTO.getArticleId()));
+                // 点赞
+                return like(likeArticleDTO, user, isLike);
+            });
+        });
+    }
+
+    private Mono<ServerResponse> like(LikeArticleDTO likeArticleDTO, SysUserPO user, Boolean isLike) {
+        Mono<ArticlePO> articlePOMono = articleRepository.findById(likeArticleDTO.getArticleId());
+        // 文章点赞数+1
+        return articlePOMono.flatMap(articlePO -> {
+
+            Long likeCount = articlePO.getLikeCount();
+            if (likeCount == null) likeCount = 0L;
+            if (isLike)
+                articlePO.setLikeCount(likeCount - 1);
+            else
+                articlePO.setLikeCount(likeCount + 1);
+            return articleRepository.save(articlePO).flatMap(articlePOUpdate -> {
+                // 用户新增点赞文章
+                user.likeArticle(articlePOUpdate, isLike);
+                return userRepository.save(user).flatMap(u -> {
+                    if (isLike)
+                        return ServerResponse.ok().body(Mono.just(Result.error("已取消", articlePOUpdate)), Result.class);
+                    else
+                        return ServerResponse.ok().body(Mono.just(Result.success("点赞成功", articlePOUpdate)), Result.class);
+                });
+            });
+        });
+    }
 
     /**
      * 根据板块分页查询文章
@@ -130,13 +240,16 @@ public class ArticleHandler extends BaseHandler<ArticleRepository, ArticlePO> {
             }
 
             ArticlePO articlePO = new ArticlePO();
-            BeanUtils.copyProperties(issueArticle, articlePO);
+            BeanUtil.copyProperties(issueArticle, articlePO);
 
             // 用户
             articlePO.setSysUser(SysUserPO.builder().id(issueArticle.getUserId()).build());
             //板块
             articlePO.setPlate(PlatePO.builder().id(issueArticle.getPlateId()).build());
-
+            // 判断是否存在图片
+            if (articlePO.getContent().indexOf("<img src=\"data:image") >= 0) {
+                articlePO.setIsImage(Boolean.TRUE);
+            }
             //默认值
             articlePO.setIsPublic(true);
             articlePO.setScanCount(0L);
@@ -204,5 +317,13 @@ public class ArticleHandler extends BaseHandler<ArticleRepository, ArticlePO> {
         return query;
     }
 
+    private Mono<UserDetails> getCurrentUser() {
+        Mono<UserDetails> user = ReactiveSecurityContextHolder.getContext()
+                .switchIfEmpty(Mono.error(new IllegalStateException("ReactiveSecurityContext is empty")))
+                .map(SecurityContext::getAuthentication)
+                .map(Authentication::getPrincipal)
+                .map(item -> (UserDetails) item);
+        return user;
+    }
 
 }

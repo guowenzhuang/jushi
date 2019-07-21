@@ -1,5 +1,6 @@
 package com.jushi.admin.handler;
 
+import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.util.StrUtil;
 import com.jushi.admin.pojo.dto.ChangePassDTO;
 import com.jushi.admin.pojo.dto.RegisterUserDTO;
@@ -10,7 +11,6 @@ import com.jushi.api.pojo.Result;
 import com.jushi.api.pojo.po.SysUserPO;
 import com.jushi.api.util.CheckUtil;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
 import org.springframework.security.core.Authentication;
@@ -55,8 +55,8 @@ public class UserHandler extends BaseHandler<UserRepository, SysUserPO> {
                 }
                 // 加密密码
                 u.setPassword(encoder.encode(upc.getNewPassword()));
-                return userRepository.save(u).flatMap(saveU ->{
-                    return ServerResponse.ok().body(Mono.just(Result.success("修改密码成功",saveU)),Result.class);
+                return userRepository.save(u).flatMap(saveU -> {
+                    return ServerResponse.ok().body(Mono.just(Result.success("修改密码成功", saveU)), Result.class);
                 });
             }).switchIfEmpty(ServerResponse.ok().body(Mono.just(Result.error(StrUtil.format("此用户不存在", upc.getUsername()))), Result.class));
 
@@ -78,6 +78,14 @@ public class UserHandler extends BaseHandler<UserRepository, SysUserPO> {
             return user.flatMap(u -> {
                 //FIXME 返回的时候不需要密码 需要改为实体类DTO返回
                 u.setPassword("");
+                if (u.getLikeComments() != null)
+                    u.getLikeComments().forEach(likeComment -> {
+                        likeComment.setChildren(null);
+                        likeComment.setParent(null);
+                        likeComment.setAncestor(null);
+                        likeComment.setArticle(null);
+                        likeComment.setSysUser(null);
+                    });
                 return ServerResponse.ok().body(Mono.just(u), SysUserPO.class);
             });
 
@@ -108,7 +116,7 @@ public class UserHandler extends BaseHandler<UserRepository, SysUserPO> {
                 }
                 //RegisterUserDTO 转换成 sysUserPO
                 SysUserPO sysUserPO = new SysUserPO();
-                BeanUtils.copyProperties(u, sysUserPO);
+                BeanUtil.copyProperties(u, sysUserPO);
                 //加密信息
                 sysUserPO.setPassword(encoder.encode(sysUserPO.getPassword()))
                         .setCreatedBy(sysUserPO.getUsername())

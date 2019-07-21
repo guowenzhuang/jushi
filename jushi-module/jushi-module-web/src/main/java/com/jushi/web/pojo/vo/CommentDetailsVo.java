@@ -1,8 +1,6 @@
 package com.jushi.web.pojo.vo;
 
-import com.jushi.api.pojo.po.ArticlePO;
 import com.jushi.api.pojo.po.CommentPO;
-import com.jushi.api.pojo.po.SysUserPO;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -33,11 +31,11 @@ public class CommentDetailsVo implements Serializable {
     /**
      * 评论文章
      */
-    private ArticlePO article;
+    private ArticleVo article;
     /**
      * 评论人
      */
-    private SysUserPO sysUser;
+    private SysUserVo sysUser;
     /**
      * 评论内容
      */
@@ -69,13 +67,28 @@ public class CommentDetailsVo implements Serializable {
     @JsonIgnore
     private CommentDetailsVo ancestor;
 
+    public void copyProperties(CommentPO commentPO) {
+        // 拷贝基本属性
+        BeanUtils.copyProperties(commentPO, this);
+
+        // 拷贝文章
+        ArticleVo articleVo = new ArticleVo();
+        articleVo.copyProperties(commentPO.getArticle());
+        this.article = articleVo;
+
+        // 拷贝用户
+        SysUserVo sysUser = new SysUserVo();
+        sysUser.copyProperties(commentPO.getSysUser());
+        this.sysUser = sysUser;
+    }
+
     public void setChildren(List<CommentPO> childrens) {
         if (childrens == null) {
             return;
         }
         this.children = childrens.stream().map(item -> {
             CommentDetailsVo commentDetailsVo = new CommentDetailsVo();
-            BeanUtils.copyProperties(item, commentDetailsVo);
+            commentDetailsVo.copyProperties(item);
             commentDetailsVo.setChildren(item.getChildren());
             return commentDetailsVo;
         }).collect(Collectors.toList());
