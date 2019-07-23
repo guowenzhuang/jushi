@@ -153,7 +153,7 @@ public class ArticleHandler extends BaseHandler<ArticleRepository, ArticlePO> {
     public Mono<ServerResponse> pageSSE(ServerRequest request) {
         MultiValueMap<String, String> params = request.queryParams();
         PageQuery pageQuery = BeanUtil.mapToBean(params.toSingleValueMap(), PageQuery.class, false);
-        return articlePageQuer(Mono.just(pageQuery), query -> {
+        return articlePageQuery(Mono.just(pageQuery), query -> {
             return getQuery(query);
         }, entityFlux -> {
             return sseReturn(entityFlux, ArticleVo.class);
@@ -161,9 +161,9 @@ public class ArticleHandler extends BaseHandler<ArticleRepository, ArticlePO> {
     }
 
 
-    private Mono<ServerResponse> articlePageQuer(Mono<PageQuery> pageQueryMono,
-                                                 Function<PageQuery, Query> queryFunction,
-                                                 Function<Flux<ArticleVo>, Mono<ServerResponse>> returnFunc) {
+    private Mono<ServerResponse> articlePageQuery(Mono<PageQuery> pageQueryMono,
+                                                  Function<PageQuery, Query> queryFunction,
+                                                  Function<Flux<ArticleVo>, Mono<ServerResponse>> returnFunc) {
         return pageQueryMono.flatMap(pageQuery -> {
             checkPage(pageQuery);
             Query query = queryFunction.apply(pageQuery);
@@ -250,11 +250,11 @@ public class ArticleHandler extends BaseHandler<ArticleRepository, ArticlePO> {
         //转换参数
         MultiValueMap<String, String> params = request.queryParams();
         ArticlePageQueryByPlate articlePageQuery = BeanUtil.mapToBean(params.toSingleValueMap(), ArticlePageQueryByPlate.class, false);
-        return pageQuery(Mono.just(articlePageQuery), query -> {
+        return articlePageQuery(Mono.just(articlePageQuery), query -> {
             ArticlePageQueryByPlate articlePageQueryByPlate = (ArticlePageQueryByPlate) query;
             return getQueryByPlate(articlePageQueryByPlate);
         }, articlePoFlux -> {
-            return ServerResponse.ok().contentType(MediaType.APPLICATION_JSON_UTF8).body(articlePoFlux, ArticlePO.class);
+            return ServerResponse.ok().contentType(MediaType.APPLICATION_JSON_UTF8).body(articlePoFlux, ArticleVo.class);
 
         });
     }
@@ -269,11 +269,11 @@ public class ArticleHandler extends BaseHandler<ArticleRepository, ArticlePO> {
         //转换参数
         MultiValueMap<String, String> params = request.queryParams();
         ArticlePageQueryByPlate articlePageQuery = BeanUtil.mapToBean(params.toSingleValueMap(), ArticlePageQueryByPlate.class, false);
-        return pageQuery(Mono.just(articlePageQuery), query -> {
+        return articlePageQuery(Mono.just(articlePageQuery), query -> {
             ArticlePageQueryByPlate articlePageQueryByPlate = (ArticlePageQueryByPlate) query;
             return getQueryByPlate(articlePageQueryByPlate);
         }, entityFlux -> {
-            return sseReturn(entityFlux);
+            return sseReturn(entityFlux, ArticleVo.class);
         });
     }
 
