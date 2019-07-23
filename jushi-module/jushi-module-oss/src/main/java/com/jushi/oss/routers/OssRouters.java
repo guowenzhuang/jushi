@@ -21,9 +21,13 @@ public class OssRouters {
                 //相当于类上面的@RequestMapping
                 RequestPredicates.path("/file"),
                 RouterFunctions.route(
-                        RequestPredicates.POST("/upload")
+                        RequestPredicates.POST("/upload/aliyun")
                                 .and(RequestPredicates.accept(MediaType.MULTIPART_FORM_DATA)),
-                        ossHandler::upload)
+                        ossHandler::upload).andRoute(
+                        RequestPredicates.POST("/upload/gridfs")
+                                .and(RequestPredicates.accept(MediaType.MULTIPART_FORM_DATA)),
+                        ossHandler::gridfsUpload
+                )
         );
     }
 }

@@ -41,6 +41,9 @@ public class ArticleRouters extends BaseRouters<ArticleHandler> {
                         RequestPredicates.POST("/like")
                                 .and(RequestPredicates.accept(MediaType.APPLICATION_JSON_UTF8)),
                         articleHandler::like
+                ).andRoute(
+                        RequestPredicates.GET("/pageByUser/SSE"),
+                        articleHandler::pageByUserSSE
                 );
         return RouterFunctions.nest(
                 //相当于类上面的@RequestMapping

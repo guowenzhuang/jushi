@@ -85,8 +85,9 @@ public class CommentHandler extends BaseHandler<CommentRepository, CommentPO> {
                 if (user.getLikeComments() == null) {
                     user.setLikeComments(new ArrayList<>());
                 }
-                boolean isLike = user.getLikeComments().stream().map(CommentPO::getId)
-                        .anyMatch(commentId -> commentId.equals(likeCommentDTO.getCommentId()));
+                    boolean isLike = user.getLikeComments().stream().map(CommentPO::getId)
+                            .anyMatch(commentId -> commentId.equals(likeCommentDTO.getCommentId()));
+                    System.out.println(isLike);
 
                 return commentPOMono.flatMap(commentPO -> {
                     Long likeCount = commentPO.getLikeCount();
@@ -107,6 +108,7 @@ public class CommentHandler extends BaseHandler<CommentRepository, CommentPO> {
                     });
                 });
             });
+
         });
     }
 

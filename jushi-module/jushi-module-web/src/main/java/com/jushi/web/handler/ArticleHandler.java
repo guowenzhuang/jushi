@@ -9,8 +9,10 @@ import com.jushi.api.pojo.po.ArticlePO;
 import com.jushi.api.pojo.po.PlatePO;
 import com.jushi.api.pojo.po.SysUserPO;
 import com.jushi.api.pojo.query.PageQuery;
+import com.jushi.api.util.CheckUtil;
 import com.jushi.web.pojo.dto.IssueArticleDTO;
 import com.jushi.web.pojo.dto.LikeArticleDTO;
+import com.jushi.web.pojo.query.ArticlePageByUserQuery;
 import com.jushi.web.pojo.query.ArticlePageQueryByPlate;
 import com.jushi.web.pojo.query.ArticleSearchQuery;
 import com.jushi.web.pojo.vo.ArticleVo;
@@ -18,6 +20,7 @@ import com.jushi.web.repository.ArticleRepository;
 import com.jushi.web.repository.UserRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.mongodb.core.ReactiveMongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
@@ -54,6 +57,91 @@ public class ArticleHandler extends BaseHandler<ArticleRepository, ArticlePO> {
     private ArticleRepository articleRepository;
     @Autowired
     private UserRepository userRepository;
+
+
+    /**
+     * 根据id查询文章
+     *
+     * @param request
+     * @return
+     */
+    @Override
+    public Mono<ServerResponse> queryById(ServerRequest request) {
+        //获取路径的id
+        String id = request.pathVariable("id");
+        if (StrUtil.isBlank(id)) {
+            CheckUtil.checkEmpty("id", id);
+        }
+        Mono<ArticlePO> mono = articleRepository.findById(id);
+        return mono.flatMap(po -> {
+            ArticleVo articleVo = new ArticleVo();
+            articleVo.copyProperties(po);
+            return ServerResponse.ok().body(Mono.just(articleVo), ArticleVo.class);
+        })
+                .switchIfEmpty(ServerResponse.ok().body(Mono.just(Result.error(StrUtil.format("id:{} 找不到此数据", id))), Result.class));
+    }
+
+    /**
+     * 根据用户分页查询(SSE)
+     *
+     * @param request
+     * @return
+     */
+    public Mono<ServerResponse> pageByUserSSE(ServerRequest request) {
+        MultiValueMap<String, String> params = request.queryParams();
+        ArticlePageByUserQuery pageQuery = BeanUtil.mapToBean(params.toSingleValueMap(), ArticlePageByUserQuery.class, false);
+        return articlePageByUserQuer(Mono.just(pageQuery), query -> {
+            return getQueryByUser(query);
+        }, entityFlux -> {
+            return sseReturn(entityFlux, ArticleVo.class);
+        });
+    }
+
+    /**
+     * 分页查询条件封装
+     *
+     * @param pageQuery
+     * @return
+     */
+    protected Mono<Query> getQueryByUser(ArticlePageByUserQuery pageQuery) {
+        Mono<SysUserPO> sysUserPOMono = userRepository.findById(pageQuery.getUserId());
+        return sysUserPOMono.map(userPO -> {
+            Query query = new Query();
+            Criteria criteria = new Criteria();
+            criteria.and("sysUser").is(userPO);
+            query.addCriteria(criteria);
+            return query;
+        });
+    }
+
+    private Mono<ServerResponse> articlePageByUserQuer(Mono<ArticlePageByUserQuery> pageQueryMono,
+                                                       Function<ArticlePageByUserQuery, Mono<Query>> queryFunction,
+                                                       Function<Flux<ArticleVo>, Mono<ServerResponse>> returnFunc) {
+        return pageQueryMono.flatMap(pageQuery -> {
+            checkPage(pageQuery);
+            Mono<Query> queryMono = queryFunction.apply(pageQuery);
+            return queryMono.flatMap(query -> {
+                Pageable pageable = getPageable(pageQuery);
+                Query with = query.with(pageable);
+                Mono<Long> count = reactiveMongoTemplate.count(with, ArticlePO.class);
+                return count.flatMap(sums -> {
+                    long size = pageQuery.getPage() * pageQuery.getSize();
+                    if (sums.longValue() == size) {
+                        return sSEReponseBuild(Mono.just(Result.error("无数据")), Result.class);
+                    }
+                    //获取数据
+                    Flux<ArticlePO> entityFlux = reactiveMongoTemplate.find(with, ArticlePO.class);
+                    Flux<ArticleVo> articleVoFlux = entityFlux.map(item -> {
+                        ArticleVo articleVo = new ArticleVo();
+                        articleVo.copyProperties(item);
+                        return articleVo;
+                    });
+                    return returnFunc.apply(articleVoFlux);
+                });
+            });
+        }).switchIfEmpty(ServerResponse.ok().body(Mono.just(Result.error(StrUtil.format("分页查询{}参数不能为null", ArticlePO.class.getName()))), Result.class));
+
+    }
 
     /**
      * 分页查询(SSE)
@@ -144,9 +232,9 @@ public class ArticleHandler extends BaseHandler<ArticleRepository, ArticlePO> {
                 user.likeArticle(articlePOUpdate, isLike);
                 return userRepository.save(user).flatMap(u -> {
                     if (isLike)
-                        return ServerResponse.ok().body(Mono.just(Result.error("已取消", articlePOUpdate)), Result.class);
+                        return ServerResponse.ok().body(Mono.just(Result.error("已取消")), Result.class);
                     else
-                        return ServerResponse.ok().body(Mono.just(Result.success("点赞成功", articlePOUpdate)), Result.class);
+                        return ServerResponse.ok().body(Mono.just(Result.success("点赞成功")), Result.class);
                 });
             });
         });
@@ -325,5 +413,16 @@ public class ArticleHandler extends BaseHandler<ArticleRepository, ArticlePO> {
                 .map(item -> (UserDetails) item);
         return user;
     }
+
+    private Mono<SysUserPO> getCuuentUserPo() {
+        Mono<UserDetails> currentUserMono = getCurrentUser();
+        return currentUserMono.flatMap(currentUser -> {
+            String username = currentUser.getUsername();
+            Example<SysUserPO> exampleUser = Example.of(SysUserPO.builder().username(username).build());
+            Mono<SysUserPO> user = userRepository.findOne(exampleUser);
+            return user;
+        });
+    }
+
 
 }

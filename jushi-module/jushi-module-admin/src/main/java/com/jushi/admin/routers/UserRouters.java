@@ -31,6 +31,10 @@ public class UserRouters extends BaseRouters<UserHandler> {
                         RequestPredicates.PUT("/changePassword")
                                 .and(RequestPredicates.accept(MediaType.APPLICATION_JSON_UTF8)),
                         userHandler::changePassword
+                ).andRoute(
+                        RequestPredicates.PUT("/userSetAvatar")
+                                .and(RequestPredicates.accept(MediaType.APPLICATION_JSON_UTF8)),
+                        userHandler::userSetAvatar
                 );
         return RouterFunctions.nest(
                 //相当于类上面的@RequestMapping

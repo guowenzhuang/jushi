@@ -4,6 +4,8 @@ import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.util.StrUtil;
 import com.jushi.admin.pojo.dto.ChangePassDTO;
 import com.jushi.admin.pojo.dto.RegisterUserDTO;
+import com.jushi.admin.pojo.dto.UserAvatarUpdate;
+import com.jushi.admin.pojo.vo.SysUserVo;
 import com.jushi.admin.repository.UserRepository;
 import com.jushi.api.exception.CheckException;
 import com.jushi.api.handler.BaseHandler;
@@ -33,6 +35,20 @@ public class UserHandler extends BaseHandler<UserRepository, SysUserPO> {
     private PasswordEncoder encoder;
     @Autowired
     private UserRepository userRepository;
+
+    public Mono<ServerResponse> userSetAvatar(ServerRequest request) {
+        Mono<UserAvatarUpdate> userAvatarUpdateMono = request.bodyToMono(UserAvatarUpdate.class);
+        return userAvatarUpdateMono.flatMap(userAvatarUpdate -> {
+            Mono<SysUserPO> sysUserPOMono = userRepository.findById(userAvatarUpdate.getUserId());
+            return sysUserPOMono.flatMap(sysUserPO -> {
+                sysUserPO.setImageUrl(userAvatarUpdate.getImgUrl());
+                return userRepository.save(sysUserPO).flatMap(saveUser -> {
+                    return ServerResponse.ok().body(Mono.just(Result.success("修改成功")), Result.class);
+
+                });
+            });
+        });
+    }
 
     /**
      * 修改密码
@@ -76,17 +92,9 @@ public class UserHandler extends BaseHandler<UserRepository, SysUserPO> {
             Example<SysUserPO> exampleUser = Example.of(SysUserPO.builder().username(username).build());
             Mono<SysUserPO> user = userRepository.findOne(exampleUser);
             return user.flatMap(u -> {
-                //FIXME 返回的时候不需要密码 需要改为实体类DTO返回
-                u.setPassword("");
-                if (u.getLikeComments() != null)
-                    u.getLikeComments().forEach(likeComment -> {
-                        likeComment.setChildren(null);
-                        likeComment.setParent(null);
-                        likeComment.setAncestor(null);
-                        likeComment.setArticle(null);
-                        likeComment.setSysUser(null);
-                    });
-                return ServerResponse.ok().body(Mono.just(u), SysUserPO.class);
+                SysUserVo sysUserVo = new SysUserVo();
+                sysUserVo.copyPropertiesMain(u);
+                return ServerResponse.ok().body(Mono.just(sysUserVo), SysUserVo.class);
             });
 
         });
