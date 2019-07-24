@@ -11,10 +11,6 @@ import org.springframework.web.reactive.config.EnableWebFlux;
 @EnableWebFlux
 @EnableReactiveMongoRepositories
 public class JuShiAuthServerApplication {
-   /* @Bean(name = "auditorAware")
-    public AuditorAware<String> auditorAware() {
-        return ()-> java.util.Optional.ofNullable(SecurityUtils.getCurrentUserUsername());
-    }*/
     public static void main(String[] args) {
         SpringApplication.run(JuShiAuthServerApplication.class, args);
     }

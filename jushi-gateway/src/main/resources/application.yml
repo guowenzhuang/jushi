@@ -30,6 +30,12 @@ spring:
             - Path=/api/uaa/**
           filters:
             - StripPrefix=2
+        - id: jushi-oss
+          uri: lb://jushi-oss
+          predicates:
+            - Path=/api/oss/**
+          filters:
+            - StripPrefix=2
 
 management:
   endpoints:

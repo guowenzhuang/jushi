@@ -1,8 +1,8 @@
 server:
-  port: 10010
+  port: 10050
 spring:
   application:
-    name: jushi-web
+    name: jushi-oss
   cloud:
     nacos:
       discovery:
@@ -15,7 +15,6 @@ spring:
 
 logging:
   level:
-    #root: debug
+    # root: debug
     org.springframework.data.mongodb.core: DEBUG
-
 

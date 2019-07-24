@@ -31,7 +31,7 @@
 
 > 可以在 application.yml 中修改账号密码等配置
 
-- jdk8
+- jdk11
 
 - redis5
 
@@ -111,13 +111,9 @@
 ## 🚀 TODO <a name = "todo"></a>
 - admin 后台管理未开发
 - 搜索未集成es
-- 文章显示 增加内容和图片显示
 - 搜索中文分词 hutool DFA查找
 - 登录 注册 修改密码 新增验证码校验
-- 文章 由base64上传改为文件上传 mongodb gridfs
 - 个人中心(修改密码,修改头像,查看自己的贴子,点赞)
-- 可以给文章和评论点赞
-- 新增文章时 增加文章介绍和文章图片字段
 
 ## ✍️ 作者 <a name = "authors"></a>
 - [@gwz](https://guowenzhuang.gitee.io/boke/) 

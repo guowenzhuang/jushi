@@ -1,8 +1,11 @@
 package com.jushi.admin.handler;
 
+import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.util.StrUtil;
 import com.jushi.admin.pojo.dto.ChangePassDTO;
 import com.jushi.admin.pojo.dto.RegisterUserDTO;
+import com.jushi.admin.pojo.dto.UserAvatarUpdate;
+import com.jushi.admin.pojo.vo.SysUserVo;
 import com.jushi.admin.repository.UserRepository;
 import com.jushi.api.exception.CheckException;
 import com.jushi.api.handler.BaseHandler;
@@ -10,7 +13,6 @@ import com.jushi.api.pojo.Result;
 import com.jushi.api.pojo.po.SysUserPO;
 import com.jushi.api.util.CheckUtil;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
 import org.springframework.security.core.Authentication;
@@ -34,6 +36,20 @@ public class UserHandler extends BaseHandler<UserRepository, SysUserPO> {
     @Autowired
     private UserRepository userRepository;
 
+    public Mono<ServerResponse> userSetAvatar(ServerRequest request) {
+        Mono<UserAvatarUpdate> userAvatarUpdateMono = request.bodyToMono(UserAvatarUpdate.class);
+        return userAvatarUpdateMono.flatMap(userAvatarUpdate -> {
+            Mono<SysUserPO> sysUserPOMono = userRepository.findById(userAvatarUpdate.getUserId());
+            return sysUserPOMono.flatMap(sysUserPO -> {
+                sysUserPO.setImageUrl(userAvatarUpdate.getImgUrl());
+                return userRepository.save(sysUserPO).flatMap(saveUser -> {
+                    return ServerResponse.ok().body(Mono.just(Result.success("修改成功")), Result.class);
+
+                });
+            });
+        });
+    }
+
     /**
      * 修改密码
      *
@@ -55,8 +71,8 @@ public class UserHandler extends BaseHandler<UserRepository, SysUserPO> {
                 }
                 // 加密密码
                 u.setPassword(encoder.encode(upc.getNewPassword()));
-                return userRepository.save(u).flatMap(saveU ->{
-                    return ServerResponse.ok().body(Mono.just(Result.success("修改密码成功",saveU)),Result.class);
+                return userRepository.save(u).flatMap(saveU -> {
+                    return ServerResponse.ok().body(Mono.just(Result.success("修改密码成功", saveU)), Result.class);
                 });
             }).switchIfEmpty(ServerResponse.ok().body(Mono.just(Result.error(StrUtil.format("此用户不存在", upc.getUsername()))), Result.class));
 
@@ -76,9 +92,9 @@ public class UserHandler extends BaseHandler<UserRepository, SysUserPO> {
             Example<SysUserPO> exampleUser = Example.of(SysUserPO.builder().username(username).build());
             Mono<SysUserPO> user = userRepository.findOne(exampleUser);
             return user.flatMap(u -> {
-                //FIXME 返回的时候不需要密码 需要改为实体类DTO返回
-                u.setPassword("");
-                return ServerResponse.ok().body(Mono.just(u), SysUserPO.class);
+                SysUserVo sysUserVo = new SysUserVo();
+                sysUserVo.copyPropertiesMain(u);
+                return ServerResponse.ok().body(Mono.just(sysUserVo), SysUserVo.class);
             });
 
         });
@@ -108,7 +124,7 @@ public class UserHandler extends BaseHandler<UserRepository, SysUserPO> {
                 }
                 //RegisterUserDTO 转换成 sysUserPO
                 SysUserPO sysUserPO = new SysUserPO();
-                BeanUtils.copyProperties(u, sysUserPO);
+                BeanUtil.copyProperties(u, sysUserPO);
                 //加密信息
                 sysUserPO.setPassword(encoder.encode(sysUserPO.getPassword()))
                         .setCreatedBy(sysUserPO.getUsername())

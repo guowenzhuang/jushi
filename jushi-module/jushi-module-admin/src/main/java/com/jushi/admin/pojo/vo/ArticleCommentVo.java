@@ -1,4 +1,4 @@
-package com.jushi.web.pojo.vo;
+package com.jushi.admin.pojo.vo;
 
 import com.jushi.api.pojo.po.CommentPO;
 import lombok.AllArgsConstructor;
@@ -10,7 +10,6 @@ import org.springframework.beans.BeanUtils;
 
 import java.io.Serializable;
 import java.util.Date;
-import java.util.List;
 
 /**
  * 帖子详情页评论VO
@@ -54,18 +53,7 @@ public class ArticleCommentVo implements Serializable {
      * 评论数
      */
     private Long commentCount;
-    /**
-     * 父级评论
-     */
-    private ArticleCommentVo parent;
-    /**
-     * 子级评论
-     */
-    private List<ArticleCommentVo> popularChildren;
-    /**
-     * 回复人
-     */
-    private SysUserVo replyUser;
+
     /**
      * 祖先评论 (最父级评论)
      */

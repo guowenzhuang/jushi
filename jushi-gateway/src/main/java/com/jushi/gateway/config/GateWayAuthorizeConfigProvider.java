@@ -16,6 +16,7 @@ public class GateWayAuthorizeConfigProvider implements AuthorizeConfigProvider {
                 .pathMatchers(
                         "/api/uaa/**",
                         "/api/web/**",
+                        "/api/oss/**",
                         "/api/admin/**")
                 .permitAll();
     }
